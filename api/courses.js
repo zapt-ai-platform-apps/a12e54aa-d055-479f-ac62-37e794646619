@@ -1,5 +1,6 @@
-import { authenticateUser } from './_apiUtils.js';
+import './sentry';
 import * as Sentry from '@sentry/node';
+import { authenticateUser } from './_apiUtils.js';
 import postgres from 'postgres';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import { user_roles } from '../drizzle/schema.js';
