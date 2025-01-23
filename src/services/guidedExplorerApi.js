@@ -7,18 +7,11 @@ export const fetchAIResponse = async (prompt, accessToken) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${accessToken}`
     },
-    body: JSON.stringify({ 
-      prompt,
-      functionCall: {
-        name: 'determine_education_requirements',
-        description: 'Determine if role requires higher education based on conversation'
-      }
-    })
+    body: JSON.stringify({ prompt })
   });
 
   if (!response.ok) throw new Error('API request failed');
-  const { result } = await response.json();
-  return result;
+  return await response.json();
 };
 
 export const fetchCourses = async (role, userId) => {
