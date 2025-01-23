@@ -1,4 +1,4 @@
-import '../sentry';
+import '../sentry.js';
 import * as Sentry from '@sentry/node';
 import { authenticateUser } from '../_apiUtils.js';
 import postgres from 'postgres';

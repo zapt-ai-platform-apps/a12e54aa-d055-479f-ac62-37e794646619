@@ -1,6 +1,6 @@
-import './sentry';
+import './sentry.js';
 import * as Sentry from '@sentry/node';
-import { createEvent } from '../src/supabaseClient';
+import { createEvent } from '../src/supabaseClient.js';
 import { authenticateUser } from './_apiUtils.js';
 
 export default async function handler(req, res) {

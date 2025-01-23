@@ -1,8 +1,8 @@
-import './sentry';
+import './sentry.js';
 import * as Sentry from '@sentry/node';
 import { authenticateUser } from './_apiUtils.js';
-import openai from './openai-client';
-import { createCareerAnalysis } from '../lib/ai-utils';
+import openai from './openai-client.js';
+import { createCareerAnalysis } from '../lib/ai-utils.js';
 
 export default async function handler(req, res) {
   try {
