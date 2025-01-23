@@ -1,0 +1,5 @@
+ALTER TABLE user_roles
+ADD COLUMN IF NOT EXISTS academic_year TEXT,
+ADD COLUMN IF NOT EXISTS subjects TEXT[],
+ADD COLUMN IF NOT EXISTS predicted_grades TEXT[],
+ADD COLUMN IF NOT EXISTS country TEXT;
