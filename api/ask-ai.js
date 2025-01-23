@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import { authenticateUser } from './_apiUtils.js';
-import openai from '../utils/openai-client';
+import openai from './utils/openai-client';
 import { createCareerAnalysis } from '../lib/ai-utils';
 
 Sentry.init({
