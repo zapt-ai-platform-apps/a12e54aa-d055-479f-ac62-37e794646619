@@ -8,7 +8,8 @@ export const modules = [
   {
     title: 'Find My Niche',
     description: 'Refine your career focus based on market trends and personal strengths',
-    status: 'locked',
+    path: '/find-my-niche',
+    status: 'available',
   },
   {
     title: 'Work Environment Finder',
