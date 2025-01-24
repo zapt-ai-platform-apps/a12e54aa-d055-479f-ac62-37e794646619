@@ -1,30 +1,34 @@
 # Guided Career Discovery Journey
 
-## 1. Initiate Guided Discovery
+## 1. Profile Setup
+- New users must complete mandatory profile setup
+- Collects academic information and key skills
+- Stores information for all future modules
+
+## 2. Initiate Guided Discovery
 - User selects "Guided Career Discovery" from Role Explorer
-- AI coach begins conversation with introductory questions
-- Questions cover interests, strengths, academic preferences, and aspirations
+- System uses stored profile data to personalize questions
+- AI coach skips basic questions already answered in profile
 
-## 2. Interactive Q&A Session
+## 3. Interactive Q&A Session
 - User responds to AI questions through text input
-- AI analyzes responses in real-time
-- Conversation continues until AI gathers enough information
+- AI analyzes responses using profile data as context
+- Conversation focuses on deeper career aspirations
 
-## 3. Receive Role Suggestions
+## 4. Receive Role Suggestions
 - AI presents 5-8 tailored career suggestions
-- Each suggestion includes brief description and key requirements
-- User can select any role to explore further
+- Suggestions incorporate profile data and conversation
+- Each suggestion includes compatibility percentage
 
-## 4. Course Recommendations
+## 5. Course Recommendations
 - For selected role:
-  - AI determines educational requirements
-  - Fetches 15 relevant courses from Perplexity API
-  - Displays university/apprenticeship options with direct links
+  - AI compares role requirements with user profile
+  - Highlights gaps in qualifications/skills
+  - Recommends bridging courses/experiences
 
-## 5. Save Career Path
-- User can save role and courses to their profile
+## 6. Save Career Path
+- User can save role with personalized recommendations
 - Saved data includes:
-  - Role title
-  - Course recommendations
-  - Educational requirements type
-  - Timestamp
+  - Customized development plan
+  - Timeline suggestions
+  - Progress tracking markers
