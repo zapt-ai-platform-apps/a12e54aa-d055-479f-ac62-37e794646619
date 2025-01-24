@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { GuidedSection } from './RoleExplorer/GuidedSection';
 import { CustomRoleForm } from './RoleExplorer/CustomRoleForm';
-import { UserProfileForm } from './RoleExplorer/UserProfileForm';
+import UserProfileForm from './RoleExplorer/UserProfileForm';
 import LoadingSpinner from './LoadingSpinner';
 import { useProfileCheck } from '../hooks/useProfileCheck';
 
