@@ -22,5 +22,11 @@ export const modules = [
     description: 'Experience virtual job shadowing through AI scenarios',
     path: '/day-in-life',
     status: 'available',
+  },
+  {
+    title: 'Close Skill Gaps',
+    description: 'Identify and address skill gaps in your chosen roles',
+    path: '/skill-gaps-hub',
+    status: 'available',
   }
 ];

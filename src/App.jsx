@@ -9,6 +9,7 @@ import CustomRoleExplorer from './components/CustomRoleExplorer';
 import FindMyNiche from './components/FindMyNiche';
 import WorkEnvironmentWizard from './components/WorkEnvironmentWizard';
 import DayInLifeSimulator from './components/DayInLifeSimulator';
+import SkillGapsHub from './components/SkillGapsHub';
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/find-my-niche" element={<FindMyNiche />} />
         <Route path="/work-environment" element={<WorkEnvironmentWizard />} />
         <Route path="/day-in-life" element={<DayInLifeSimulator />} />
+        <Route path="/skill-gaps-hub" element={<SkillGapsHub />} />
       </Routes>
     </Router>
   );
