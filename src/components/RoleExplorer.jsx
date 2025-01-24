@@ -1,38 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import GuidedSection from './RoleExplorer/GuidedSection';
-import CustomRoleForm from './RoleExplorer/CustomRoleForm';
-import UserProfileForm from './RoleExplorer/UserProfileForm';
+import { GuidedSection } from './RoleExplorer/GuidedSection';
+import { CustomRoleForm } from './RoleExplorer/CustomRoleForm';
+import { UserProfileForm } from './RoleExplorer/UserProfileForm';
 import LoadingSpinner from './LoadingSpinner';
-import * as Sentry from '@sentry/browser';
+import { useProfileCheck } from '../hooks/useProfileCheck';
 
 export default function RoleExplorer() {
-  const [customRole, setCustomRole] = useState('');
-  const [hasProfile, setHasProfile] = useState(false);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkProfile = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        const { count } = await supabase
-          .from('user_profiles')
-          .select('*', { count: 'exact', head: true })
-          .eq('user_id', user.id);
-
-        setHasProfile(count > 0);
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error('Profile check error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    checkProfile();
-  }, []);
+  const { hasProfile, loading } = useProfileCheck();
+  const [customRole, setCustomRole] = React.useState('');
 
   const handleGuidedStart = () => navigate('/role-explorer/guided');
   const handleCustomStart = (e) => {
@@ -51,7 +28,7 @@ export default function RoleExplorer() {
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Role Explorer</h1>
           
           {!hasProfile ? (
-            <UserProfileForm onComplete={() => setHasProfile(true)} />
+            <UserProfileForm onComplete={() => window.location.reload()} />
           ) : (
             <div className="space-y-6">
               <p className="text-gray-600 mb-8">
