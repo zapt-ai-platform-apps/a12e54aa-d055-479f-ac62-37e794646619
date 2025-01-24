@@ -14,11 +14,13 @@ export const modules = [
   {
     title: 'Work Environment Finder',
     description: 'Identify ideal workplace settings for your personality',
-    status: 'locked',
+    path: '/work-environment',
+    status: 'available',
   },
   {
     title: 'Day-in-the-Life Simulator',
     description: 'Experience virtual job shadowing through AI scenarios',
-    status: 'locked',
-  },
+    path: '/day-in-life',
+    status: 'available',
+  }
 ];
