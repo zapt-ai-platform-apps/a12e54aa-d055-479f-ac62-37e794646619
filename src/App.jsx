@@ -7,6 +7,7 @@ import RoleExplorer from './components/RoleExplorer';
 import GuidedExplorer from './components/GuidedExplorer';
 import CustomRoleExplorer from './components/CustomRoleExplorer';
 import FindMyNiche from './components/FindMyNiche';
+import WorkEnvironmentWizard from './components/WorkEnvironmentWizard';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/role-explorer/guided" element={<GuidedExplorer />} />
         <Route path="/role-explorer/custom/:role" element={<CustomRoleExplorer />} />
         <Route path="/find-my-niche" element={<FindMyNiche />} />
+        <Route path="/work-environment" element={<WorkEnvironmentWizard />} />
       </Routes>
     </Router>
   );
