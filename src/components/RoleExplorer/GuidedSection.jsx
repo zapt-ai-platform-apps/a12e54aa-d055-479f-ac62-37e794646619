@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function GuidedSection({ onStart }) {
   return (
     <div className="bg-blue-50 p-6 rounded-lg">
@@ -10,7 +8,7 @@ export function GuidedSection({ onStart }) {
       </p>
       <button
         onClick={onStart}
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors cursor-pointer"
       >
         Start Guided Discovery
       </button>
