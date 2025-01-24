@@ -5,6 +5,7 @@ import { questions } from '../data/guidedExplorerQuestions';
 import { calculateRecommendations } from '../api/recommendations';
 import ProgressBar from './ProgressBar';
 import RoleRecommendations from './RoleRecommendations';
+import QuestionStep from './GuidedExplorer/QuestionStep';
 
 export default function GuidedExplorer() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -30,34 +31,35 @@ export default function GuidedExplorer() {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm p-6">
         <ProgressBar total={questions.length} current={currentStep + 1} />
         
-        {!recommendations ? (
-          <motion.div 
-            key={currentStep}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            className="space-y-8"
+        <div className="flex justify-between items-center mb-6">
+          <button
+            onClick={handleBack}
+            className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
           >
-            <h2 className="text-2xl font-bold text-center">
-              {questions[currentStep].text}
-            </h2>
-            <div className="grid gap-4 md:grid-cols-2">
-              {questions[currentStep].options.map((option, i) => (
-                <button
-                  key={i}
-                  onClick={() => handleAnswerSelect(option)}
-                  className="p-4 text-left bg-white border-2 border-gray-200 rounded-xl hover:border-blue-500 hover:bg-blue-50 transition-all"
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </motion.div>
+            Back
+          </button>
+          <span className="text-gray-600">Step {currentStep + 1} of {questions.length}</span>
+        </div>
+
+        {!recommendations ? (
+          <QuestionStep
+            currentStep={currentStep}
+            questions={questions}
+            handleAnswerSelect={handleAnswerSelect}
+          />
         ) : (
           <RoleRecommendations 
             recommendations={recommendations}
