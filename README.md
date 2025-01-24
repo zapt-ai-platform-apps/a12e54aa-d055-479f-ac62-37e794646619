@@ -9,7 +9,8 @@ AI-powered career guidance platform helping students discover optimal career pat
 3. [Work Environment Finder](docs/journeys/work-environment-finder.md) - Identify ideal workplace settings and organizational fits
 4. [Custom Role Exploration](docs/journeys/custom-role-exploration.md) - Direct exploration of specific career roles with course matching
 5. [Close Skill Gaps](docs/journeys/close-skill-gaps.md) - Identify and address competency gaps in chosen roles
-6. Career Path Management - Save and track multiple career possibilities
+6. [Application Development Hub](docs/journeys/application-development-hub.md) - Explore real-world job opportunities matching saved roles
+7. Career Path Management - Save and track multiple career possibilities
 
 ## External Services Used
 - Perplexity AI - Real-time course recommendations and opportunity search

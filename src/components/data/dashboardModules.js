@@ -28,5 +28,11 @@ export const modules = [
     description: 'Identify and address skill gaps in your chosen roles',
     path: '/skill-gaps-hub',
     status: 'available',
+  },
+  {
+    title: 'Application Hub',
+    description: 'Explore real-world job opportunities for your saved roles',
+    path: '/application-hub',
+    status: 'available',
   }
 ];
