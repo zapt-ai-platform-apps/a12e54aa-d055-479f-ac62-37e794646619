@@ -1,4 +1,4 @@
-import { pgTable, uuid, text, timestamp, boolean } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, text, timestamp, boolean, json } from 'drizzle-orm/pg-core';
 
 export const user_roles = pgTable('user_roles', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -15,7 +15,7 @@ export const user_roles = pgTable('user_roles', {
 export const saved_courses = pgTable('saved_courses', {
   id: uuid('id').primaryKey().defaultRandom(),
   user_id: uuid('user_id').notNull(),
-  role_id: uuid('role_id').references(() => user_roles.id),
+  role_id: uuid('role_id').references(() => user_roles.id, { onDelete: 'cascade' }),
   provider_name: text('provider_name').notNull(),
   course_title: text('course_title').notNull(),
   course_url: text('course_url').notNull(),
