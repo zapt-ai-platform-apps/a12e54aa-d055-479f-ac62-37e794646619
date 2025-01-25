@@ -1,41 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { modules } from './data/dashboardModules';
-import { supabase } from '../supabaseClient';
 import Navigation from './Navigation';
 import ModuleCard from './ModuleCard';
 import LoadingSpinner from './LoadingSpinner';
-import * as Sentry from '@sentry/browser';
+import useDashboardData from '../hooks/useDashboardData';
 
 export default function Dashboard() {
-  const [savedRoles, setSavedRoles] = useState([]);
-  const [hasProfile, setHasProfile] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        
-        const [rolesRes, profileRes] = await Promise.all([
-          supabase.from('user_roles').select('id').eq('user_id', user.id),
-          supabase.from('user_profiles').select('id', { count: 'exact', head: true }).eq('user_id', user.id)
-        ]);
-
-        if (rolesRes.error) throw rolesRes.error;
-        if (profileRes.error) throw profileRes.error;
-
-        setSavedRoles(rolesRes.data || []);
-        setHasProfile(profileRes.count > 0);
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error('Dashboard data error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchData();
-  }, []);
+  const { savedRoles, hasProfile, loading } = useDashboardData();
 
   const updatedModules = modules.map(module => ({
     ...module,
@@ -53,9 +24,15 @@ export default function Dashboard() {
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Career Development Modules</h2>
           {!hasProfile && (
-            <p className="text-red-500 mb-4">
-              Complete your profile in Role Explorer to unlock all modules
-            </p>
+            <div className="bg-blue-50 p-4 rounded-lg mb-4">
+              <p className="text-blue-600">
+                Complete your profile in the{' '}
+                <a href="/role-explorer" className="text-blue-700 underline">
+                  Role Explorer
+                </a>{' '}
+                to unlock all modules
+              </p>
+            </div>
           )}
           <p className="text-gray-600">
             Complete modules in sequence to unlock your full career potential

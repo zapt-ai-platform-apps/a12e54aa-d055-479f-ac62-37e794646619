@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import * as Sentry from '@sentry/browser';
-import { defaultFormData, skillOptions } from './constants';
+import { defaultFormData } from './constants';
 import { SkillsSection } from './SkillsSection';
+import { FormField } from './FormField';
+import { saveUserProfile } from '../../utils/api';
 
 export default function UserProfileForm({ onComplete }) {
   const [formData, setFormData] = useState(defaultFormData);
@@ -29,17 +31,7 @@ export default function UserProfileForm({ onComplete }) {
     
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      
-      const { error } = await supabase.from('user_profiles').upsert({
-        user_id: user.id,
-        academic_year: formData.academicYear,
-        subjects: formData.subjects.split(',').map(s => s.trim()),
-        predicted_grades: formData.predictedGrades.split(',').map(s => s.trim()),
-        location_preference: formData.location,
-        skills: formData.skills
-      });
-
-      if (error) throw error;
+      await saveUserProfile(formData, user.id);
       onComplete();
     } catch (err) {
       Sentry.captureException(err);
@@ -80,50 +72,32 @@ export default function UserProfileForm({ onComplete }) {
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Main Subjects (comma separated)
-            </label>
-            <input
-              type="text"
-              name="subjects"
-              value={formData.subjects}
-              onChange={handleInputChange}
-              placeholder="e.g., Mathematics, Physics, English"
-              className="w-full p-2 border rounded-lg"
-              required
-            />
-          </div>
+          <FormField
+            label="Main Subjects (comma separated)"
+            name="subjects"
+            value={formData.subjects}
+            onChange={handleInputChange}
+            placeholder="e.g., Mathematics, Physics, English"
+            required
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Predicted Grades (comma separated)
-            </label>
-            <input
-              type="text"
-              name="predictedGrades"
-              value={formData.predictedGrades}
-              onChange={handleInputChange}
-              placeholder="e.g., A, B+, A*"
-              className="w-full p-2 border rounded-lg"
-              required
-            />
-          </div>
+          <FormField
+            label="Predicted Grades (comma separated)"
+            name="predictedGrades"
+            value={formData.predictedGrades}
+            onChange={handleInputChange}
+            placeholder="e.g., A, B+, A*"
+            required
+          />
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Preferred Work Location
-            </label>
-            <input
-              type="text"
-              name="location"
-              value={formData.location}
-              onChange={handleInputChange}
-              placeholder="e.g., London, Remote, Anywhere"
-              className="w-full p-2 border rounded-lg"
-              required
-            />
-          </div>
+          <FormField
+            label="Preferred Work Location"
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
+            placeholder="e.g., London, Remote, Anywhere"
+            required
+          />
 
           <SkillsSection 
             selectedSkills={formData.skills}
