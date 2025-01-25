@@ -14,9 +14,9 @@ export default async function handler(req, res) {
     const { academicYear, subjects, predictedGrades, location, skills } = req.body;
 
     // Convert comma-separated strings to arrays
-    const subjectsArray = subjects.split(',').map(s => s.trim());
-    const gradesArray = predictedGrades.split(',').map(s => s.trim());
-    const skillsArray = skills.split(',').map(s => s.trim());
+    const subjectsArray = subjects?.split(',').map(s => s.trim()) || [];
+    const gradesArray = predictedGrades?.split(',').map(s => s.trim()) || [];
+    const skillsArray = skills?.split(',').map(s => s.trim()) || [];
 
     await db.insert(user_profiles).values({
       user_id: user.id,

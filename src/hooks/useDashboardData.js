@@ -10,28 +10,22 @@ export default function useDashboardData() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Starting dashboard data fetch');
         const { data: { user } } = await supabase.auth.getUser();
-        console.log('User ID:', user?.id);
 
         const [rolesRes, profileRes] = await Promise.all([
           supabase.from('user_roles').select('id').eq('user_id', user.id),
-          supabase.from('user_profiles').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
+          supabase.from('user_profiles').select('id').eq('user_id', user.id)
         ]);
-
-        console.log('Roles query results:', rolesRes);
-        console.log('Profile query results:', profileRes);
 
         if (rolesRes.error) throw rolesRes.error;
         if (profileRes.error) throw profileRes.error;
 
         setSavedRoles(rolesRes.data || []);
-        setHasProfile(profileRes.count > 0);
+        setHasProfile(profileRes.data.length > 0);
       } catch (error) {
         console.error('Dashboard data error:', error);
         Sentry.captureException(error);
       } finally {
-        console.log('Finished dashboard data fetch');
         setLoading(false);
       }
     };
