@@ -27,8 +27,8 @@ export default function Dashboard() {
             <div className="bg-blue-50 p-4 rounded-lg mb-4">
               <p className="text-blue-600">
                 Complete your profile in the{' '}
-                <a href="/role-explorer" className="text-blue-700 underline">
-                  Role Explorer
+                <a href="/profile-setup" className="text-blue-700 underline">
+                  Profile Setup
                 </a>{' '}
                 to unlock all modules
               </p>

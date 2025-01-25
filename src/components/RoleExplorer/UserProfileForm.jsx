@@ -1,46 +1,17 @@
-import React, { useState } from 'react';
-import { supabase } from '../../supabaseClient';
-import * as Sentry from '@sentry/browser';
-import { defaultFormData } from './constants';
+import React from 'react';
 import { SkillsSection } from './SkillsSection';
 import { FormField } from './FormField';
-import { saveUserProfile } from '../../utils/api';
+import { useUserProfileForm } from './useUserProfileForm';
 
 export default function UserProfileForm({ onComplete }) {
-  const [formData, setFormData] = useState(defaultFormData);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSkillToggle = (skill) => {
-    setFormData(prev => ({
-      ...prev,
-      skills: prev.skills.includes(skill)
-        ? prev.skills.filter(s => s !== skill)
-        : [...prev.skills, skill]
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      await saveUserProfile(formData, user.id);
-      onComplete();
-    } catch (err) {
-      Sentry.captureException(err);
-      setError('Failed to save profile. Please try again.');
-      console.error('Profile save error:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    formData,
+    loading,
+    error,
+    handleInputChange,
+    handleSkillToggle,
+    handleSubmit
+  } = useUserProfileForm(onComplete);
 
   return (
     <div className="space-y-6">
