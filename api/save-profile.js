@@ -25,6 +25,16 @@ export default async function handler(req, res) {
       predicted_grades: gradesArray,
       location_preference: location,
       skills: skillsArray
+    }).onConflictDoUpdate({
+      target: user_profiles.user_id,
+      set: {
+        academic_year: academicYear,
+        subjects: subjectsArray,
+        predicted_grades: gradesArray,
+        location_preference: location,
+        skills: skillsArray,
+        updated_at: new Date()
+      }
     });
 
     res.status(200).json({ success: true });
