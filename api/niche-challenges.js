@@ -1,13 +1,10 @@
 import './sentry.js';
 import * as Sentry from '@sentry/node';
-import { authenticateUser } from './_apiUtils.js';
-import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { authenticateUser, getDBClient } from './_apiUtils.js';
 import { niche_challenges } from '../drizzle/schema.js';
 import { eq } from 'drizzle-orm';
 
-const client = postgres(process.env.COCKROACH_DB_URL);
-const db = drizzle(client);
+const db = getDBClient();
 
 export default async function handler(req, res) {
   try {

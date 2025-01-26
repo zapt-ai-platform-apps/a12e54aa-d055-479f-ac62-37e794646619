@@ -1,17 +1,14 @@
 import './sentry.js';
 import * as Sentry from '@sentry/node';
-import { authenticateUser } from './_apiUtils.js';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import postgres from 'postgres';
+import { authenticateUser, getDBClient } from './_apiUtils.js';
 import { user_roles, saved_courses } from '../drizzle/schema.js';
+
+const db = getDBClient();
 
 export default async function handler(req, res) {
   try {
     const user = await authenticateUser(req);
     const { role, requiresHigherEducation, courses } = req.body;
-    
-    const client = postgres(process.env.COCKROACH_DB_URL);
-    const db = drizzle(client);
 
     const [newRole] = await db.insert(user_roles).values({
       user_id: user.id,
@@ -24,8 +21,8 @@ export default async function handler(req, res) {
         user_id: user.id,
         role_id: newRole.id,
         provider_name: course.provider,
-        course_title: course.course,
-        course_url: course.url,
+        course_title: course.name,
+        course_url: course.link,
         is_higher_education: requiresHigherEducation
       }))
     );

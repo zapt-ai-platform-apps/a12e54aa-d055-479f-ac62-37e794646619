@@ -17,3 +17,8 @@ export async function authenticateUser(req) {
 
   return user;
 }
+
+export function getDBClient() {
+  const client = postgres(process.env.COCKROACH_DB_URL);
+  return drizzle(client);
+}

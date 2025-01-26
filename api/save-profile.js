@@ -1,19 +1,15 @@
 import './sentry.js';
 import * as Sentry from '@sentry/node';
-import { authenticateUser } from './_apiUtils.js';
-import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
+import { authenticateUser, getDBClient } from './_apiUtils.js';
 import { user_profiles } from '../drizzle/schema.js';
 
-const client = postgres(process.env.COCKROACH_DB_URL);
-const db = drizzle(client);
+const db = getDBClient();
 
 export default async function handler(req, res) {
   try {
     const user = await authenticateUser(req);
     const { academicYear, subjects, predictedGrades, location, skills } = req.body;
 
-    // Convert comma-separated strings to arrays
     const subjectsArray = subjects?.split(',').map(s => s.trim()) || [];
     const gradesArray = predictedGrades?.split(',').map(s => s.trim()) || [];
     const skillsArray = skills?.split(',').map(s => s.trim()) || [];
