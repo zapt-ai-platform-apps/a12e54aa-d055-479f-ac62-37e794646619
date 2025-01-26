@@ -2,62 +2,64 @@ import React from 'react';
 import { SkillsSection } from './SkillsSection';
 import { FormField } from './FormField';
 import { useUserProfileForm } from './useUserProfileForm';
+import { SubjectGradeInput } from './SubjectGradeInput';
+import { Button } from './Button';
+import { useNavigate } from 'react-router-dom';
+import { FormHeader } from './FormHeader';
 
 export default function UserProfileForm({ onComplete }) {
+  const navigate = useNavigate();
   const {
     formData,
     loading,
     error,
     handleInputChange,
     handleSkillToggle,
+    handleSubjectGradeChange,
+    handleAddSubjectGrade,
+    handleRemoveSubjectGrade,
     handleSubmit
   } = useUserProfileForm(onComplete);
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Profile Setup</h2>
-      <p className="text-gray-600 mb-6">
-        Let's start with some basic information to personalize your experience.
-      </p>
+      <FormHeader 
+        onBack={() => navigate('/dashboard')}
+        title="Profile Setup"
+        description="Let's start with some basic information to personalize your experience."
+      />
 
       {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Current Academic Year
-            </label>
-            <select
-              name="academicYear"
-              value={formData.academicYear}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded-lg bg-white"
-              required
-            >
-              <option value="">Select academic year</option>
-              <option value="Year 12">Year 12</option>
-              <option value="Year 13">Year 13</option>
-              <option value="Gap Year">Gap Year</option>
-              <option value="University Freshman">University Freshman</option>
-            </select>
-          </div>
-
           <FormField
-            label="Main Subjects (comma separated)"
-            name="subjects"
-            value={formData.subjects}
+            label="Current Academic Year"
+            name="academicYear"
+            value={formData.academicYear}
             onChange={handleInputChange}
-            placeholder="e.g., Mathematics, Physics, English"
+            placeholder="e.g., Year 12, University Freshman"
             required
           />
 
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Subjects and Predicted Grades
+            </label>
+            <SubjectGradeInput
+              pairs={formData.subjectGradePairs}
+              onAdd={handleAddSubjectGrade}
+              onChange={handleSubjectGradeChange}
+              onRemove={handleRemoveSubjectGrade}
+            />
+          </div>
+
           <FormField
-            label="Predicted Grades (comma separated)"
-            name="predictedGrades"
-            value={formData.predictedGrades}
+            label="Country of Exams"
+            name="country"
+            value={formData.country}
             onChange={handleInputChange}
-            placeholder="e.g., A, B+, A*"
+            placeholder="Enter your country"
             required
           />
 
@@ -76,13 +78,9 @@ export default function UserProfileForm({ onComplete }) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
-        >
+        <Button type="submit" disabled={loading} className="w-full">
           {loading ? 'Saving...' : 'Complete Profile'}
-        </button>
+        </Button>
       </form>
     </div>
   );

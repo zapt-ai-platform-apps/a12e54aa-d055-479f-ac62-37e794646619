@@ -30,6 +30,7 @@ export const user_profiles = pgTable('user_profiles', {
   subjects: text('subjects').array(),
   predicted_grades: text('predicted_grades').array(),
   location_preference: text('location_preference'),
+  country: text('country'),
   skills: text('skills').array(),
   created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
