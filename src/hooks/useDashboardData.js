@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
 import * as Sentry from '@sentry/browser';
 
 export default function useDashboardData() {
@@ -10,18 +9,19 @@ export default function useDashboardData() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        setLoading(true);
+        
+        // Fetch user roles from API
+        const rolesResponse = await fetch('/api/user-roles');
+        if (!rolesResponse.ok) throw new Error('Failed to fetch roles');
+        const rolesData = await rolesResponse.json();
+        setSavedRoles(rolesData);
 
-        const [rolesRes, profileRes] = await Promise.all([
-          supabase.from('user_roles').select('id').eq('user_id', user.id),
-          supabase.from('user_profiles').select('id').eq('user_id', user.id)
-        ]);
-
-        if (rolesRes.error) throw rolesRes.error;
-        if (profileRes.error) throw profileRes.error;
-
-        setSavedRoles(rolesRes.data || []);
-        setHasProfile(profileRes.data.length > 0);
+        // Check profile existence from API
+        const profileResponse = await fetch('/api/user-profile');
+        if (!profileResponse.ok) throw new Error('Failed to check profile');
+        const profileData = await profileResponse.json();
+        setHasProfile(profileData.exists);
       } catch (error) {
         console.error('Dashboard data error:', error);
         Sentry.captureException(error);
