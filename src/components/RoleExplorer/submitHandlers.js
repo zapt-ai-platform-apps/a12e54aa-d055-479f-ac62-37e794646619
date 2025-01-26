@@ -5,7 +5,7 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
   setLoading(true);
   
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getUser();
     const subjects = formData.subjectGradePairs.map(pair => pair.subject.trim());
     const predictedGrades = formData.subjectGradePairs.map(pair => pair.grade.trim());
 
@@ -13,15 +13,26 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       throw new Error('Please fill in all subject and grade fields');
     }
 
-    await supabase.from('user_profiles').upsert({
-      user_id: user.id,
-      academic_year: formData.academicYear,
-      subjects: subjects,
-      predicted_grades: predictedGrades,
-      location_preference: formData.location,
-      country: formData.country,
-      skills: formData.skills
+    const response = await fetch('/api/save-profile', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session.access_token}`
+      },
+      body: JSON.stringify({
+        academicYear: formData.academicYear,
+        subjects: subjects,
+        predictedGrades: predictedGrades,
+        location: formData.location,
+        country: formData.country,
+        skills: formData.skills
+      })
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to save profile');
+    }
 
     onComplete();
   } catch (err) {
