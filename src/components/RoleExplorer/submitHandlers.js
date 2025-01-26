@@ -5,7 +5,9 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
   setLoading(true);
   
   try {
-    const { data: { session } } = await supabase.auth.getUser();
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) throw new Error('No active session');
+
     const subjects = formData.subjectGradePairs.map(pair => pair.subject.trim());
     const predictedGrades = formData.subjectGradePairs.map(pair => pair.grade.trim());
 
@@ -17,7 +19,7 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.access_token}`
+        Authorization: `Bearer ${session?.access_token}`
       },
       body: JSON.stringify({
         academicYear: formData.academicYear,
