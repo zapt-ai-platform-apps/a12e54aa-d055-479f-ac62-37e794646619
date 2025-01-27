@@ -58,6 +58,15 @@ export default function UserProfileForm({ onComplete }) {
             required
           />
 
+          <FormField
+            label="Country"
+            name="country"
+            value={formData.country}
+            onChange={handleInputChange}
+            placeholder="Enter your country"
+            required
+          />
+
           <SkillsSection 
             selectedSkills={formData.skills}
             onSkillToggle={handleSkillToggle}
