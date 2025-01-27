@@ -1,24 +1,20 @@
 import './sentry.js';
 import * as Sentry from '@sentry/node';
-import { authenticateUser } from './_apiUtils.js';
-import postgres from 'postgres';
-import { drizzle } from 'drizzle-orm/postgres-js';
-import { user_roles } from '../drizzle/schema.js';
+import { authenticateUser, getDBClient } from './_apiUtils.js';
+import { user_profiles } from '../drizzle/schema.js';
 import { eq } from 'drizzle-orm';
+
+const db = getDBClient();
 
 export default async function handler(req, res) {
   try {
     const user = await authenticateUser(req);
-    const { role, userId } = req.query;
+    const { role } = req.query;
 
-    const client = postgres(process.env.COCKROACH_DB_URL);
-    const db = drizzle(client);
-
-    // Get user's academic profile
+    // Get user's academic profile using Drizzle
     const [userProfile] = await db.select()
-      .from(user_roles)
-      .where(eq(user_roles.user_id, user.id))
-      .limit(1);
+      .from(user_profiles)
+      .where(eq(user_profiles.user_id, user.id));
 
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',

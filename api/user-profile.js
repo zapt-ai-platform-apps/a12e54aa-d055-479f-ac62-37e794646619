@@ -12,8 +12,7 @@ export default async function handler(req, res) {
     
     const profile = await db.select()
       .from(user_profiles)
-      .where(eq(user_profiles.user_id, user.id))
-      .limit(1);
+      .where(eq(user_profiles.user_id, user.id));
 
     res.status(200).json({ exists: profile.length > 0 });
   } catch (error) {
