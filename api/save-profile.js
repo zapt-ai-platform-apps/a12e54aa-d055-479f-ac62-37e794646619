@@ -11,9 +11,10 @@ export default async function handler(req, res) {
     const user = await authenticateUser(req);
     const { academicYear, subjects, predictedGrades, location, country, skills } = req.body;
 
-    const subjectsArray = subjects?.split(',').map(s => s.trim()) || [];
-    const gradesArray = predictedGrades?.split(',').map(s => s.trim()) || [];
-    const skillsArray = skills?.split(',').map(s => s.trim()) || [];
+    // Remove manual splitting since we receive arrays directly
+    const subjectsArray = subjects || [];
+    const gradesArray = predictedGrades || [];
+    const skillsArray = skills || [];
 
     await db.insert(user_profiles)
       .values({

@@ -8,6 +8,7 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('No active session');
 
+    // Convert subject-grade pairs to arrays
     const subjects = formData.subjectGradePairs.map(pair => pair.subject.trim());
     const predictedGrades = formData.subjectGradePairs.map(pair => pair.grade.trim());
 
