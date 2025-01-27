@@ -20,7 +20,15 @@ export default function RoleExplorer() {
     <div className="min-h-screen bg-gray-50">
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Role Explorer</h1>
+          <div className="flex justify-between items-center mb-6">
+            <h1 className="text-3xl font-bold text-gray-900">Role Explorer</h1>
+            <button
+              onClick={() => navigate('/dashboard')}
+              className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+            >
+              Back to Dashboard
+            </button>
+          </div>
           
           <div className="space-y-6">
             <p className="text-gray-600 mb-8">

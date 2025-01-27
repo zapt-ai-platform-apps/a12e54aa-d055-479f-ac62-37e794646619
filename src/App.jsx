@@ -12,6 +12,7 @@ import DayInLifeSimulator from './components/DayInLifeSimulator';
 import SkillGapsHub from './components/SkillGapsHub';
 import ApplicationHub from './components/ApplicationHub';
 import ProfileSetup from './components/ProfileSetup';
+import ProfileViewEdit from './components/ProfileViewEdit';
 
 export default function App() {
   return (
@@ -21,6 +22,7 @@ export default function App() {
         <Route path="/login" element={<AuthComponent />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile-setup" element={<ProfileSetup />} />
+        <Route path="/profile" element={<ProfileViewEdit />} />
         <Route path="/role-explorer" element={<RoleExplorer />} />
         <Route path="/role-explorer/guided" element={<GuidedExplorer />} />
         <Route path="/role-explorer/custom/:role" element={<CustomRoleExplorer />} />
