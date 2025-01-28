@@ -20,17 +20,16 @@ export async function fetchProfileData() {
   const data = await response.json();
 
   const academicYear = data.academic_year || '';
-  const subjectGrades = data.subject_grades?.map((sg) => ({
-    subject: sg.subject,
-    grade: sg.grade
-  })) || [];
+  const subjects = data.subjects || [];
+  const predictedGrades = data.predicted_grades || [];
   const location = data.location_preference || '';
   const country = data.country || '';
   const skills = Array.isArray(data.skills) ? data.skills : [];
 
   return {
     academicYear,
-    subjectGrades,
+    subjects,
+    predictedGrades,
     location,
     country,
     skills
