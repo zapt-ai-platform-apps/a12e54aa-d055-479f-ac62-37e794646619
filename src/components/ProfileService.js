@@ -21,7 +21,6 @@ export async function fetchProfileData() {
   const data = await response.json();
   console.log('Received profile data:', data);
 
-  // Transform API response to match form field names
   return {
     academicYear: data.academic_year || '',
     subjects: data.subjects?.join(', ') || '',

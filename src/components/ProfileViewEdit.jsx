@@ -23,13 +23,14 @@ export default function ProfileViewEdit() {
     const loadProfile = async () => {
       try {
         const data = await fetchProfileData();
+        console.log('Profile data:', data);
         setProfileData({
           academicYear: data.academicYear,
           subjects: data.subjects,
           predictedGrades: data.predictedGrades,
           location: data.location,
           country: data.country,
-          skills: data.skills
+          skills: data.skills || []
         });
       } catch (error) {
         console.error('Profile fetch error:', error);
