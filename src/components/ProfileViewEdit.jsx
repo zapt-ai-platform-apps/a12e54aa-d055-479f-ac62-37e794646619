@@ -13,10 +13,15 @@ export default function ProfileViewEdit() {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session?.access_token) {
+          throw new Error('No access token found');
+        }
+
+        console.log('Fetching user profile with token...');
         const response = await fetch('/api/user-profile', {
           headers: {
-            Authorization: `Bearer ${user?.id}`
+            Authorization: `Bearer ${session.access_token}`
           }
         });
         
