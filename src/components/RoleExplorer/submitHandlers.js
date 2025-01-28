@@ -16,8 +16,7 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       },
       body: JSON.stringify({
         academicYear: formData.academicYear,
-        subjects: formData.subjects.split(',').map(s => s.trim()),
-        predictedGrades: formData.predictedGrades.split(',').map(s => s.trim()),
+        subjectGrades: formData.subjectGrades,
         location: formData.location,
         country: formData.country,
         skills: formData.skills

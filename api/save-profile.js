@@ -9,32 +9,25 @@ const db = getDBClient();
 export default async function handler(req, res) {
   try {
     const user = await authenticateUser(req);
-    const { academicYear, subjects, predictedGrades, location, country, skills } = req.body;
-
-    // Remove manual splitting since we receive arrays directly
-    const subjectsArray = subjects || [];
-    const gradesArray = predictedGrades || [];
-    const skillsArray = skills || [];
+    const { academicYear, subjectGrades, location, country, skills } = req.body;
 
     await db.insert(user_profiles)
       .values({
         user_id: user.id,
         academic_year: academicYear,
-        subjects: subjectsArray,
-        predicted_grades: gradesArray,
+        subject_grades: subjectGrades,
         location_preference: location,
         country: country,
-        skills: skillsArray
+        skills: skills
       })
       .onConflictDoUpdate({
         target: user_profiles.user_id,
         set: {
           academic_year: academicYear,
-          subjects: subjectsArray,
-          predicted_grades: gradesArray,
+          subject_grades: subjectGrades,
           location_preference: location,
           country: country,
-          skills: skillsArray,
+          skills: skills,
           updated_at: new Date()
         }
       });

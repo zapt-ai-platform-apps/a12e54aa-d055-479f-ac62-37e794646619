@@ -2,14 +2,18 @@ import { useState } from 'react';
 import { handleProfileSubmit } from './submitHandlers';
 import { 
   handleInputChange as formInputChange,
-  handleSkillToggle as formSkillToggle
+  handleSkillToggle as formSkillToggle,
+  handlePairChange as formPairChange,
+  handleAddPair as formAddPair,
+  handleRemovePair as formRemovePair
 } from './formHandlers';
 import { defaultFormData } from './constants';
 
 export const useUserProfileForm = (onComplete, initialData) => {
   const [formData, setFormData] = useState({
     ...defaultFormData,
-    ...initialData
+    ...initialData,
+    subjectGrades: initialData.subjectGrades || []
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -24,6 +28,15 @@ export const useUserProfileForm = (onComplete, initialData) => {
     },
     handleSkillToggle: (skill) => {
       setFormData(prev => formSkillToggle(skill, prev));
+    },
+    handlePairChange: (index, field, value) => {
+      setFormData(prev => formPairChange(index, field, value, prev));
+    },
+    handleAddPair: () => {
+      setFormData(prev => formAddPair(prev));
+    },
+    handleRemovePair: (index) => {
+      setFormData(prev => formRemovePair(index, prev));
     },
     handleSubmit: async (e) => {
       e.preventDefault();

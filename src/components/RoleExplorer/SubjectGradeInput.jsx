@@ -11,7 +11,7 @@ export const SubjectGradeInput = ({ pairs, onAdd, onChange, onRemove }) => {
             placeholder="Subject"
             value={pair.subject}
             onChange={(e) => onChange(index, 'subject', e.target.value)}
-            className="flex-1 p-2 border rounded-lg"
+            className="flex-1 p-2 border rounded-lg box-border"
             required
           />
           <input
@@ -19,7 +19,7 @@ export const SubjectGradeInput = ({ pairs, onAdd, onChange, onRemove }) => {
             placeholder="Grade"
             value={pair.grade}
             onChange={(e) => onChange(index, 'grade', e.target.value)}
-            className="flex-1 p-2 border rounded-lg"
+            className="flex-1 p-2 border rounded-lg box-border"
             required
           />
           <button

@@ -2,7 +2,7 @@ import React from 'react';
 import { SkillsSection } from './RoleExplorer/SkillsSection';
 import { FormField } from './RoleExplorer/FormField';
 import { useUserProfileForm } from './RoleExplorer/useUserProfileForm';
-import { AcademicYearDropdown } from './RoleExplorer/AcademicYearDropdown';
+import { SubjectGradeInput } from './RoleExplorer/SubjectGradeInput';
 import { SubmitButton } from './RoleExplorer/SubmitButton';
 
 export default function UserProfileForm({ initialData, keySkills, onComplete, isEditMode }) {
@@ -12,6 +12,9 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
     error,
     handleInputChange,
     handleSkillToggle,
+    handleAddPair,
+    handlePairChange,
+    handleRemovePair,
     handleSubmit
   } = useUserProfileForm(onComplete, { ...initialData, skills: keySkills });
 
@@ -23,27 +26,21 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-4">
-          <AcademicYearDropdown 
+          <FormField
+            label="Current Academic Year"
+            name="academicYear"
             value={formData.academicYear}
             onChange={handleInputChange}
+            placeholder="e.g., Year 12, University Freshman"
+            required
+            inputClassName="w-full p-2 border rounded-lg box-border"
           />
 
-          <FormField
-            label="Main Subjects (comma separated)"
-            name="subjects"
-            value={formData.subjects}
-            onChange={handleInputChange}
-            placeholder="e.g., Mathematics, Physics, English"
-            required
-          />
-
-          <FormField
-            label="Predicted Grades (comma separated)"
-            name="predictedGrades"
-            value={formData.predictedGrades}
-            onChange={handleInputChange}
-            placeholder="e.g., A, B+, A*"
-            required
+          <SubjectGradeInput
+            pairs={formData.subjectGrades}
+            onAdd={handleAddPair}
+            onChange={handlePairChange}
+            onRemove={handleRemovePair}
           />
 
           <FormField

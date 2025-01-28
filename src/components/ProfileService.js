@@ -6,7 +6,6 @@ export async function fetchProfileData() {
     throw new Error('No access token found');
   }
 
-  console.log('Fetching user profile with token...');
   const response = await fetch('/api/user-profile', {
     headers: {
       Authorization: `Bearer ${session.access_token}`
@@ -19,20 +18,19 @@ export async function fetchProfileData() {
   }
   
   const data = await response.json();
-  console.log('Received profile data:', data);
 
-  // Ensure all fields are properly parsed
   const academicYear = data.academic_year || '';
-  const subjects = Array.isArray(data.subjects) ? data.subjects.join(', ') : '';
-  const predictedGrades = Array.isArray(data.predicted_grades) ? data.predicted_grades.join(', ') : '';
+  const subjectGrades = data.subject_grades?.map((sg) => ({
+    subject: sg.subject,
+    grade: sg.grade
+  })) || [];
   const location = data.location_preference || '';
   const country = data.country || '';
   const skills = Array.isArray(data.skills) ? data.skills : [];
 
   return {
     academicYear,
-    subjects,
-    predictedGrades,
+    subjectGrades,
     location,
     country,
     skills
