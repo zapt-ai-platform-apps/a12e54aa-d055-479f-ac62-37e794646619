@@ -8,7 +8,14 @@ import { fetchProfileData } from './ProfileService';
 
 export default function ProfileViewEdit() {
   const navigate = useNavigate();
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState({
+    academicYear: '',
+    subjects: '',
+    predictedGrades: '',
+    location: '',
+    country: '',
+    skills: []
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -16,7 +23,14 @@ export default function ProfileViewEdit() {
     const loadProfile = async () => {
       try {
         const data = await fetchProfileData();
-        setProfileData(data);
+        setProfileData({
+          academicYear: data.academicYear,
+          subjects: data.subjects,
+          predictedGrades: data.predictedGrades,
+          location: data.location,
+          country: data.country,
+          skills: data.skills
+        });
       } catch (error) {
         console.error('Profile fetch error:', error);
         Sentry.captureException(error);
