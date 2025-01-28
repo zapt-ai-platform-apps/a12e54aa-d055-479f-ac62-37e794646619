@@ -21,12 +21,20 @@ export async function fetchProfileData() {
   const data = await response.json();
   console.log('Received profile data:', data);
 
+  // Ensure all fields are properly parsed
+  const academicYear = data.academic_year || '';
+  const subjects = Array.isArray(data.subjects) ? data.subjects.join(', ') : '';
+  const predictedGrades = Array.isArray(data.predicted_grades) ? data.predicted_grades.join(', ') : '';
+  const location = data.location_preference || '';
+  const country = data.country || '';
+  const skills = Array.isArray(data.skills) ? data.skills : [];
+
   return {
-    academicYear: data.academic_year || '',
-    subjects: Array.isArray(data.subjects) ? data.subjects.join(', ') : '',
-    predictedGrades: Array.isArray(data.predicted_grades) ? data.predicted_grades.join(', ') : '',
-    location: data.location_preference || '',
-    country: data.country || '',
-    skills: Array.isArray(data.skills) ? data.skills : []
+    academicYear,
+    subjects,
+    predictedGrades,
+    location,
+    country,
+    skills
   };
 }

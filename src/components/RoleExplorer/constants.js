@@ -1,6 +1,7 @@
 export const defaultFormData = {
   academicYear: '',
-  subjectGradePairs: [{ subject: '', grade: '' }],
+  subjects: '',
+  predictedGrades: '',
   location: '',
   country: '',
   skills: []

@@ -16,6 +16,7 @@ export default function ProfileViewEdit() {
     country: '',
     skills: []
   });
+  const [keySkills, setKeySkills] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -32,6 +33,7 @@ export default function ProfileViewEdit() {
           country: data.country || '',
           skills: data.skills || []
         });
+        setKeySkills(data.skills || []);
       } catch (error) {
         console.error('Profile fetch error:', error);
         Sentry.captureException(error);
@@ -58,6 +60,7 @@ export default function ProfileViewEdit() {
           )}
           <UserProfileForm 
             initialData={profileData} 
+            keySkills={keySkills}
             onComplete={() => navigate('/dashboard')} 
             isEditMode={true}
           />

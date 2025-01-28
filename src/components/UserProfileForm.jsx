@@ -5,7 +5,7 @@ import { useUserProfileForm } from './RoleExplorer/useUserProfileForm';
 import { AcademicYearDropdown } from './RoleExplorer/AcademicYearDropdown';
 import { SubmitButton } from './RoleExplorer/SubmitButton';
 
-export default function UserProfileForm({ onComplete }) {
+export default function UserProfileForm({ initialData, keySkills, onComplete, isEditMode }) {
   const {
     formData,
     loading,
@@ -13,14 +13,11 @@ export default function UserProfileForm({ onComplete }) {
     handleInputChange,
     handleSkillToggle,
     handleSubmit
-  } = useUserProfileForm(onComplete);
+  } = useUserProfileForm(onComplete, { ...initialData, skills: keySkills });
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Profile Setup</h2>
-      <p className="text-gray-600 mb-6">
-        Let's start with some basic information to personalize your experience.
-      </p>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">{isEditMode ? 'Edit Profile' : 'Profile Setup'}</h2>
 
       {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg">{error}</div>}
 
