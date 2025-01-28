@@ -27,7 +27,18 @@ export default function ProfileViewEdit() {
         
         if (!response.ok) throw new Error('Failed to fetch profile');
         const data = await response.json();
-        setProfileData(data);
+        
+        // Transform API response to match form field names
+        const transformedData = {
+          academicYear: data.academic_year || '',
+          subjects: data.subjects?.join(', ') || '',
+          predictedGrades: data.predicted_grades?.join(', ') || '',
+          location: data.location_preference || '',
+          country: data.country || '',
+          skills: data.skills || []
+        };
+        
+        setProfileData(transformedData);
       } catch (error) {
         Sentry.captureException(error);
         console.error('Profile fetch error:', error);
