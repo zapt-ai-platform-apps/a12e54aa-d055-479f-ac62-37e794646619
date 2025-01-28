@@ -23,17 +23,6 @@ export default function Dashboard() {
       <main className="container mx-auto px-6 py-8">
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Career Development Modules</h2>
-          {!hasProfile && (
-            <div className="bg-blue-50 p-4 rounded-lg mb-4">
-              <p className="text-blue-600">
-                Complete your profile in the{' '}
-                <a href="/profile-setup" className="text-blue-700 underline">
-                  Profile Setup
-                </a>{' '}
-                to unlock all modules
-              </p>
-            </div>
-          )}
           <p className="text-gray-600">
             Complete modules in sequence to unlock your full career potential
           </p>

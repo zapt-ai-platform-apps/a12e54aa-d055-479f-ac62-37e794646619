@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const FormField = ({ label, name, value, onChange, placeholder, required }) => {
+export const FormField = ({ label, name, value, onChange, placeholder, required, inputClassName = 'w-full p-2 border rounded-lg' }) => {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -12,7 +12,7 @@ export const FormField = ({ label, name, value, onChange, placeholder, required 
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full p-2 border rounded-lg"
+        className={inputClassName}
         required={required}
       />
     </div>
