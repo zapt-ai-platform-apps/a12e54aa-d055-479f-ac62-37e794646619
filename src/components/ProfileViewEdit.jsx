@@ -25,11 +25,11 @@ export default function ProfileViewEdit() {
         const data = await fetchProfileData();
         console.log('Profile data:', data);
         setProfileData({
-          academicYear: data.academicYear,
-          subjects: data.subjects,
-          predictedGrades: data.predictedGrades,
-          location: data.location,
-          country: data.country,
+          academicYear: data.academicYear || '',
+          subjects: data.subjects || '', 
+          predictedGrades: data.predictedGrades || '',
+          location: data.location || '',
+          country: data.country || '',
           skills: data.skills || []
         });
       } catch (error) {

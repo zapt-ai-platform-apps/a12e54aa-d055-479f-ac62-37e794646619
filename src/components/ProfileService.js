@@ -23,10 +23,10 @@ export async function fetchProfileData() {
 
   return {
     academicYear: data.academic_year || '',
-    subjects: data.subjects?.join(', ') || '',
-    predictedGrades: data.predicted_grades?.join(', ') || '',
+    subjects: Array.isArray(data.subjects) ? data.subjects.join(', ') : '',
+    predictedGrades: Array.isArray(data.predicted_grades) ? data.predicted_grades.join(', ') : '',
     location: data.location_preference || '',
     country: data.country || '',
-    skills: data.skills || []
+    skills: Array.isArray(data.skills) ? data.skills : []
   };
 }
