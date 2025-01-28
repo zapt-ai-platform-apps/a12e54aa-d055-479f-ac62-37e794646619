@@ -4,50 +4,29 @@ import UserProfileForm from './RoleExplorer/UserProfileForm';
 import LoadingSpinner from './LoadingSpinner';
 import * as Sentry from '@sentry/browser';
 import { supabase } from '../supabaseClient';
+import { fetchProfileData } from './ProfileService';
 
 export default function ProfileViewEdit() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const loadProfile = async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        if (!session?.access_token) {
-          throw new Error('No access token found');
-        }
-
-        console.log('Fetching user profile with token...');
-        const response = await fetch('/api/user-profile', {
-          headers: {
-            Authorization: `Bearer ${session.access_token}`
-          }
-        });
-        
-        if (!response.ok) throw new Error('Failed to fetch profile');
-        const data = await response.json();
-        
-        // Transform API response to match form field names
-        const transformedData = {
-          academicYear: data.academic_year || '',
-          subjects: data.subjects?.join(', ') || '',
-          predictedGrades: data.predicted_grades?.join(', ') || '',
-          location: data.location_preference || '',
-          country: data.country || '',
-          skills: data.skills || []
-        };
-        
-        setProfileData(transformedData);
+        const data = await fetchProfileData();
+        setProfileData(data);
       } catch (error) {
-        Sentry.captureException(error);
         console.error('Profile fetch error:', error);
+        Sentry.captureException(error);
+        setError(error.message || 'Failed to load profile data. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfile();
+    loadProfile();
   }, []);
 
   if (loading) return <LoadingSpinner />;
@@ -57,6 +36,11 @@ export default function ProfileViewEdit() {
       <div className="container mx-auto px-6 py-12">
         <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm p-8">
           <h1 className="text-2xl font-bold mb-6">Your Profile</h1>
+          {error && (
+            <div className="bg-red-50 text-red-600 p-3 rounded-lg mb-6">
+              {error}
+            </div>
+          )}
           <UserProfileForm 
             initialData={profileData} 
             onComplete={() => navigate('/dashboard')} 

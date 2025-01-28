@@ -5,13 +5,13 @@ import { supabase } from '../supabaseClient';
 export function useProfileCheck() {
   const [hasProfile, setHasProfile] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const checkProfile = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
         if (!session?.access_token) {
-          // If no session is found, user might be logged out, handle accordingly
           setHasProfile(false);
           setLoading(false);
           return;
@@ -24,12 +24,18 @@ export function useProfileCheck() {
           }
         });
         
-        if (!response.ok) throw new Error('Profile check failed');
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Profile check failed');
+        }
+        
         const data = await response.json();
+        console.log('Profile existence check result:', data);
         setHasProfile(!!data.exists);
       } catch (error) {
-        Sentry.captureException(error);
         console.error('Profile check error:', error);
+        Sentry.captureException(error);
+        setError(error.message || 'Failed to check profile');
       } finally {
         setLoading(false);
       }
@@ -38,5 +44,5 @@ export function useProfileCheck() {
     checkProfile();
   }, []);
 
-  return { hasProfile, loading };
+  return { hasProfile, loading, error };
 }
