@@ -10,7 +10,7 @@ export default function AuthComponent() {
   useEffect(() => {
     console.log("Auth component")
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
-      console.log("Auth component event")
+      console.log("Auth component event: ", event)
       if (event === 'SIGNED_IN') {
         console.log("Auth component event - sign in")
         const { data: { user }, error } = await supabase.auth.getUser();
