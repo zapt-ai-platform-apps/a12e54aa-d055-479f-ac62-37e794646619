@@ -1,18 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LandingPage from './components/LandingPage';
-import AuthComponent from './components/Auth';
-import Dashboard from './components/Dashboard';
-import RoleExplorer from './components/RoleExplorer';
-import GuidedExplorer from './components/GuidedExplorer';
-import CustomRoleExplorer from './components/CustomRoleExplorer';
-import FindMyNiche from './components/FindMyNiche';
-import WorkEnvironmentWizard from './components/WorkEnvironmentWizard';
-import DayInLifeSimulator from './components/DayInLifeSimulator';
-import SkillGapsHub from './components/SkillGapsHub';
-import ApplicationHub from './components/ApplicationHub';
-import ProfileSetup from './components/ProfileSetup';
-import ProfileViewEdit from './components/ProfileViewEdit';
+import { LandingPage, AuthComponent, Dashboard, ProfileSetup, ProfileViewEdit, RoleExplorer, GuidedExplorer, CustomRoleExplorer, FindMyNiche, WorkEnvironmentWizard, DayInLifeSimulator, SkillGapsHub, ApplicationHub } from './routes';
 import { supabase, recordLogin } from './supabaseClient';
 import * as Sentry from '@sentry/browser';
 
@@ -23,7 +11,7 @@ export default function App() {
         const { data: { user }, error } = await supabase.auth.getUser();
         if (user?.email) {
           try {
-            await recordLogin(user.email);
+            await recordLogin(user.email, import.meta.env.VITE_PUBLIC_APP_ENV);
           } catch (error) {
             console.error('Failed to record login:', error);
             Sentry.captureException(error);
