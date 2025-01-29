@@ -8,11 +8,16 @@ export default function AuthComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Auth component")
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+      console.log("Auth component event")
       if (event === 'SIGNED_IN') {
+        console.log("Auth component event - sign in")
         const { data: { user }, error } = await supabase.auth.getUser();
+        console.log("Auth component event, user: ", user)
         if (user?.email) {
           try {
+            console.log("Auth component - recordLogin")
             await recordLogin(user.email);
           } catch (error) {
             console.error('Failed to record login:', error);
