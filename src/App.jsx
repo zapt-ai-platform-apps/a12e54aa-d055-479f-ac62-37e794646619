@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import AuthComponent from './components/Auth';
@@ -13,8 +13,26 @@ import SkillGapsHub from './components/SkillGapsHub';
 import ApplicationHub from './components/ApplicationHub';
 import ProfileSetup from './components/ProfileSetup';
 import ProfileViewEdit from './components/ProfileViewEdit';
+import { supabase } from './supabaseClient';
 
 export default function App() {
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
+      if (event === 'SIGNED_IN') {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (user?.email) {
+          try {
+            await recordLogin(user.email);
+          } catch (error) {
+            console.error('Failed to record login:', error);
+          }
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <Router>
       <Routes>
