@@ -1,15 +1,23 @@
 import React, { useEffect } from 'react';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { supabase } from '../supabaseClient';
+import { supabase, recordLogin } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
 
 export default function AuthComponent() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') {
+        const { data: { user }, error } = await supabase.auth.getUser();
+        if (user?.email) {
+          try {
+            await recordLogin(user.email);
+          } catch (error) {
+            console.error('Failed to record login:', error);
+          }
+        }
         navigate('/dashboard');
       }
     });
