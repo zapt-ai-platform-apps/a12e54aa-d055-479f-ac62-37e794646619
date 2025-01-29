@@ -13,7 +13,8 @@ import SkillGapsHub from './components/SkillGapsHub';
 import ApplicationHub from './components/ApplicationHub';
 import ProfileSetup from './components/ProfileSetup';
 import ProfileViewEdit from './components/ProfileViewEdit';
-import { supabase } from './supabaseClient';
+import { supabase, recordLogin } from './supabaseClient';
+import * as Sentry from '@sentry/browser';
 
 export default function App() {
   useEffect(() => {
@@ -25,6 +26,7 @@ export default function App() {
             await recordLogin(user.email);
           } catch (error) {
             console.error('Failed to record login:', error);
+            Sentry.captureException(error);
           }
         }
       }
