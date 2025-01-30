@@ -12,6 +12,15 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
     const subjects = subjectGrades.map(pair => pair.subject);
     const predictedGrades = subjectGrades.map(pair => pair.grade);
 
+    console.log('Starting profile update with data:', {
+      academicYear: formData.academicYear,
+      subjects,
+      predictedGrades,
+      location: formData.location,
+      country: formData.country,
+      skills: formData.skills
+    });
+
     const response = await fetch('/api/save-profile', {
       method: 'POST',
       headers: {
@@ -28,6 +37,8 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       })
     });
 
+    console.log('Profile update response:', response);
+
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.error || 'Failed to save profile');
@@ -35,9 +46,9 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
 
     onComplete();
   } catch (err) {
+    console.error('Profile save error:', err);
     Sentry.captureException(err);
     setError(err.message || 'Failed to save profile. Please try again.');
-    console.error('Profile save error:', err);
   } finally {
     setLoading(false);
   }

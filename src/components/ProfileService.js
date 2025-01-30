@@ -6,6 +6,7 @@ export async function fetchProfileData() {
     throw new Error('No access token found');
   }
 
+  console.log('Fetching profile data from API...');
   const response = await fetch('/api/user-profile', {
     headers: {
       Authorization: `Bearer ${session.access_token}`

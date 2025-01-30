@@ -7,10 +7,12 @@ export default function useProfileEffects({ setProfileData, setKeySkills, setLoa
     const loadProfile = async () => {
       try {
         setLoading(true);
+        console.log('Loading profile data...');
         const data = await fetchProfileData();
-        console.log('Profile data:', data);
+        console.log('Profile data loaded:', data);
         
         if (!data?.academicYear) {
+          console.log('No academic year found - marking as new user');
           setIsNewUser(true);
         }
 

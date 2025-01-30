@@ -26,6 +26,7 @@ export default function ProfileViewEdit() {
   const handleSubjectGradeUpdate = (updatedPairs) => {
     const subjects = updatedPairs.map(pair => pair.subject);
     const predictedGrades = updatedPairs.map(pair => pair.grade);
+    console.log('Updating subject/grade pairs:', {subjects, predictedGrades});
     setProfileData(prev => ({
       ...prev,
       subjects,
