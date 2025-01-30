@@ -8,7 +8,7 @@ export const IntroductionStep = ({ startGuidedExploration, loading }) => (
         Back to Dashboard
       </Link>
     </div>
-    <h1 className="text-3xl font-bold mb-6">Guided Career Discovery</h1>
+    <h1 className="text-3xl font-bold mb极客 -6">Guided Career Discovery</h1>
     <p className="text-gray-600 mb-8">
       Our AI career coach will ask you 5-7 questions to understand your interests, strengths, and aspirations.
     </p>

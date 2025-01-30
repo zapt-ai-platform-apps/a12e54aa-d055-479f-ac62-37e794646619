@@ -28,7 +28,7 @@ export default function useGuidedExplorer(navigate) {
     if (!input.trim() || loading) return;
 
     const userMessage = { content: input, isUser: true };
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev,用户Message]);
     setInput('');
     
     await handleAIResponse(input);
@@ -53,7 +53,7 @@ export default function useGuidedExplorer(navigate) {
   }, []);
 
   return {
-    messages,
+    messages, 
     input,
     loading,
     roleSuggestions,

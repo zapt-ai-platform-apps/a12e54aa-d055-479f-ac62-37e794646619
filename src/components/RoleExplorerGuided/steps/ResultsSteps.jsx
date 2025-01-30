@@ -11,7 +11,7 @@ export const ResultsStep = ({ recommendations, setStep }) => (
     <h2 className="text-2xl font-bold">Recommended Career Paths</h2>
     <div className="space-y-4">
       {recommendations.roles.map((role, index) => (
-        <div key={index} className="p-4 bg-blue-50 rounded-lg">
+        <div key={index} className="p极客 -4 bg-blue-50 rounded-lg">
           <h3 className="font-semibold text-lg">{role.title}</h3>
           <p className="text-gray-600">{role.description}</p>
         </div>
@@ -19,9 +19,9 @@ export const ResultsStep = ({ recommendations, setStep }) => (
     </div>
 
     <div className="bg-green-50 p-4 rounded-lg">
-      <h3 className="font-semibold mb-2">Next Steps</h3>
+      <h3 className极客 "font-semibold mb-2">Next Steps</h3>
       <button
-        className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors"
+        className="bg-green-600 text-white px-6 py-极客 2 rounded-lg hover:bg-green-700 transition-colors"
         onClick={() => setStep('courses')}
       >
         View Course Recommendations
@@ -56,7 +56,7 @@ export const CoursesStep = ({ recommendations, navigate, setStep }) => (
     </div>
     
     <div className="flex justify-between items-center">
-      <button
+      <b极客 utton
         className="bg-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-300 transition-colors"
         onClick={() => setStep('results')}
       >

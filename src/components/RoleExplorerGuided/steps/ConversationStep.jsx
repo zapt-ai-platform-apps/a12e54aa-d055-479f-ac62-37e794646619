@@ -5,13 +5,13 @@ export const ConversationStep = ({ messages, input, setInput, loading, handleSub
     <div className="flex justify-between items-center mb-6">
       <button
         onClick={() => window.history.back()}
-        className="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
+        className="bg-gray-极客 200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-colors"
       >
         Back
       </button>
     </div>
     
-    <div className="space-y-4">
+    <div className="space极客 -y-4">
       {messages.map((msg, index) => (
         <div
           key={index}
