@@ -9,7 +9,10 @@ const db = getDBClient();
 export default async function handler(req, res) {
   try {
     const user = await authenticateUser(req);
+    if (!user) throw new Error('User not authenticated');
+
     const { role } = req.query;
+    if (!role) throw new Error('Role parameter is required');
 
     // Get user's academic profile using Drizzle
     const [userProfile] = await db.select()
@@ -38,12 +41,17 @@ export default async function handler(req, res) {
 
     if (!response.ok) throw new Error('Perplexity API error');
     const data = await response.json();
-    const courses = JSON.parse(data.choices[0].message.content).courses;
     
-    res.status(200).json({ courses });
+    const parsedData = JSON.parse(data.choices[0].message.content);
+    if (!parsedData?.courses) throw new Error('Invalid course data format');
+
+    res.status(200).json({ courses: parsedData.courses });
   } catch (error) {
     console.error('Courses API Error:', error);
     Sentry.captureException(error);
-    res.status(500).json({ error: error.message || 'Failed to fetch courses' });
+    res.status(500).json({ 
+      error: error.message || 'Failed to fetch courses',
+      details: error.response?.data || null 
+    });
   }
 }

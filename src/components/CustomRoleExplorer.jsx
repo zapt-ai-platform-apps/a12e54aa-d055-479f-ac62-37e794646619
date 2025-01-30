@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
 import * as Sentry from '@sentry/browser';
 import CustomRoleExplorerUI from './CustomRoleExplorerUI';
+import { fetchCourses } from '../api/guidedExploration.js';
 
 export default function CustomRoleExplorer() {
   const { role } = useParams();
@@ -12,12 +13,12 @@ export default function CustomRoleExplorer() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCoursesData = async () => {
       try {
-        const response = await fetch(`/api/courses?role=${encodeURIComponent(role)}&type=university`);
-        if (!response.ok) throw new Error('Failed to fetch courses');
-        const data = await response.json();
-        setCourses(data.courses);
+        setLoading(true);
+        const { data: { session } } = await supabase.auth.getSession();
+        const response = await fetchCourses(session, role);
+        setCourses(response.courses);
       } catch (err) {
         console.error('Error:', err);
         Sentry.captureException(err);
@@ -27,7 +28,7 @@ export default function CustomRoleExplorer() {
       }
     };
 
-    fetchCourses();
+    fetchCoursesData();
   }, [role]);
 
   const handleSave = async () => {
