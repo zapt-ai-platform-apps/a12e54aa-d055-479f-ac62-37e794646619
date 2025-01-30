@@ -8,6 +8,10 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('No active session');
 
+    const subjectGrades = formData.subjectGrades || [];
+    const subjects = subjectGrades.map(pair => pair.subject);
+    const predictedGrades = subjectGrades.map(pair => pair.grade);
+
     const response = await fetch('/api/save-profile', {
       method: 'POST',
       headers: {
@@ -16,7 +20,8 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       },
       body: JSON.stringify({
         academicYear: formData.academicYear,
-        subjectGrades: formData.subjectGrades,
+        subjects,
+        predictedGrades,
         location: formData.location,
         country: formData.country,
         skills: formData.skills

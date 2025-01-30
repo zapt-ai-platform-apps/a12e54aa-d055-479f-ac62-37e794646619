@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { handleProfileSubmit } from './submitHandlers';
 import { 
   handleInputChange as formInputChange,
@@ -13,7 +13,10 @@ export const useUserProfileForm = (onComplete, initialData) => {
   const [formData, setFormData] = useState({
     ...defaultFormData,
     ...initialData,
-    subjectGrades: initialData.subjectGrades || []
+    subjectGrades: initialData.subjects?.map((subject, index) => ({
+      subject,
+      grade: initialData.predictedGrades?.[index] || ''
+    })) || []
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

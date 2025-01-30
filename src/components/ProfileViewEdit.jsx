@@ -23,6 +23,16 @@ export default function ProfileViewEdit() {
 
   useProfileEffects({ setProfileData, setKeySkills, setLoading, setError, setIsNewUser });
 
+  const handleSubjectGradeUpdate = (updatedPairs) => {
+    const subjects = updatedPairs.map(pair => pair.subject);
+    const predictedGrades = updatedPairs.map(pair => pair.grade);
+    setProfileData(prev => ({
+      ...prev,
+      subjects,
+      predictedGrades
+    }));
+  };
+
   if (loading) return <LoadingSpinner />;
 
   return (
@@ -46,6 +56,7 @@ export default function ProfileViewEdit() {
             onComplete={() => navigate('/dashboard')} 
             isEditMode={true}
             showBackButton={!isNewUser}
+            onSubjectGradeUpdate={handleSubjectGradeUpdate}
           />
         </div>
       </div>

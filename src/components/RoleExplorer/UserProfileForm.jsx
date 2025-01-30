@@ -4,7 +4,14 @@ import { useUserProfileForm } from './useUserProfileForm';
 import { FormFields } from './FormFields';
 import { SubmitButton } from './SubmitButton';
 
-export default function UserProfileForm({ initialData, keySkills, onComplete, isEditMode, showBackButton = true }) {
+export default function UserProfileForm({ 
+  initialData, 
+  keySkills, 
+  onComplete, 
+  isEditMode, 
+  showBackButton = true,
+  onSubjectGradeUpdate 
+}) {
   const {
     formData,
     loading,
@@ -16,6 +23,12 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
     handleRemovePair,
     handleSubmit
   } = useUserProfileForm(onComplete, { ...initialData, skills: keySkills });
+
+  useEffect(() => {
+    if (onSubjectGradeUpdate) {
+      onSubjectGradeUpdate(formData.subjectGrades);
+    }
+  }, [formData.subjectGrades, onSubjectGradeUpdate]);
 
   return (
     <div className="space-y-6">
