@@ -1,7 +1,7 @@
-import './sentry.js';
+import '../sentry.js';
 import * as Sentry from '@sentry/node';
-import { authenticateUser } from './_apiUtils.js';
-import { fetchCoursesFromPerplexity } from './_coursesApiService.js';
+import { authenticateUser } from '../_apiUtils.js';
+import { fetchCoursesFromPerplexity } from '../_coursesApiService.js';
 
 export default async function handler(req, res) {
   try {
