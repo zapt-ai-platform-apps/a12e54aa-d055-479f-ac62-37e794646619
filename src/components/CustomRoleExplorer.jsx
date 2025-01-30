@@ -4,6 +4,7 @@ import { supabase } from '../supabaseClient';
 import * as Sentry from '@sentry/browser';
 import CustomRoleExplorerUI from './CustomRoleExplorerUI';
 import { fetchCourses } from '../api/guidedExploration.js';
+import { saveExploration } from '../utils/saveExploration';
 
 export default function CustomRoleExplorer() {
   const { role } = useParams();
@@ -18,11 +19,12 @@ export default function CustomRoleExplorer() {
         setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
         const response = await fetchCourses(session, role);
-        setCourses(response.courses);
+        setCourses(response.courses || []); // Ensure courses is always an array
       } catch (err) {
         console.error('Error:', err);
         Sentry.captureException(err);
         setError('Failed to load course recommendations');
+        setCourses([]); // Set to empty array on error
       } finally {
         setLoading(false);
       }
