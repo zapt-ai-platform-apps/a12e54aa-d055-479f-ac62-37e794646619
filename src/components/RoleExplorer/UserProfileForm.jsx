@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SkillsSection } from './SkillsSection';
+import { FormField } from './FormField';
 import { useUserProfileForm } from './useUserProfileForm';
-import { FormFields } from './FormFields';
+import { SubjectGradeInput } from './SubjectGradeInput';
 import { SubmitButton } from './SubmitButton';
+import { FormFields } from './FormFields';
 
 export default function UserProfileForm({ 
   initialData, 
@@ -43,11 +45,7 @@ export default function UserProfileForm({
           handleAddPair={handleAddPair}
           handlePairChange={handlePairChange}
           handleRemovePair={handleRemovePair}
-        />
-
-        <SkillsSection 
-          selectedSkills={formData.skills}
-          onSkillToggle={handleSkillToggle}
+          handleSkillToggle={handleSkillToggle}
         />
 
         {showBackButton && (

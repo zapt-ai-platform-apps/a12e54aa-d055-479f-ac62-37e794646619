@@ -1,7 +1,15 @@
 import { FormField } from './FormField';
 import { SubjectGradeInput } from './SubjectGradeInput';
+import { SkillsSection } from './SkillsSection';
 
-export function FormFields({ formData, handleInputChange, handleAddPair, handlePairChange, handleRemovePair }) {
+export function FormFields({ 
+  formData,
+  handleInputChange,
+  handleAddPair,
+  handlePairChange,
+  handleRemovePair,
+  handleSkillToggle
+}) {
   return (
     <div className="space-y-4">
       <FormField
@@ -37,6 +45,11 @@ export function FormFields({ formData, handleInputChange, handleAddPair, handleP
         onChange={handleInputChange}
         placeholder="Enter your country"
         required
+      />
+
+      <SkillsSection 
+        selectedSkills={formData.skills}
+        onSkillToggle={handleSkillToggle}
       />
     </div>
   );
