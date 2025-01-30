@@ -10,8 +10,8 @@ export default function ProfileViewEdit() {
   const navigate = useNavigate();
   const [profileData, setProfileData] = useState({
     academicYear: '',
-    subjects: [],
-    predictedGrades: [],
+    subjects: '',
+    predictedGrades: '',
     location: '',
     country: '',
     skills: []

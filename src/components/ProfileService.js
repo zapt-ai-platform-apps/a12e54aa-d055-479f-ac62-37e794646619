@@ -18,6 +18,15 @@ export async function fetchProfileData() {
   }
   
   const data = await response.json();
+  
+  console.log('Profile data retrieved:', {
+    academicYear: data.academic_year,
+    subjects: data.subjects,
+    predictedGrades: data.predicted_grades,
+    location: data.location_preference,
+    country: data.country,
+    skills: data.skills
+  });
 
   const academicYear = data.academic_year || '';
   const subjects = data.subjects || [];

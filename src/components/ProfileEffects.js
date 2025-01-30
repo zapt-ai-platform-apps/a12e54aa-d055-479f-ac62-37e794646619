@@ -16,8 +16,8 @@ export default function useProfileEffects({ setProfileData, setKeySkills, setLoa
 
         setProfileData({
           academicYear: data.academicYear || '',
-          subjects: data.subjects || '', 
-          predictedGrades: data.predictedGrades || '',
+          subjects: data.subjects || [], 
+          predictedGrades: data.predictedGrades || [],
           location: data.location || '',
           country: data.country || '',
           skills: data.skills || []
