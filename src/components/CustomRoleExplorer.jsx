@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import * as Sentry from '@sentry/browser';
+import Sentry from '@sentry/browser';
 import CustomRoleExplorerUI from './CustomRoleExplorerUI';
 import LoadingSpinner from './LoadingSpinner';
 import { useRoleData } from '../hooks/useRoleData';

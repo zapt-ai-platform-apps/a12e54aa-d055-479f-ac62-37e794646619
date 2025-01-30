@@ -11,8 +11,9 @@ export const useRoleData = (role, setError) => {
       try {
         setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
+        const encodedRole = encodeURIComponent(role);
         
-        const response = await fetch(`/api/explorations/custom?role=${encodeURIComponent(role)}`, {
+        const response = await fetch(`/api/explorations/custom/${encodedRole}`, {
           headers: {
             Authorization: `Bearer ${session?.access_token}`
           }
