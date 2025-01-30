@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/node';
 import { authenticateUser, getDBClient } from './_apiUtils.js';
 import { user_profiles } from '../drizzle/schema.js';
 import { eq } from 'drizzle-orm';
-import { generatePrompt, fetchCoursesFromPerplexity } from './_coursesUtils.js';
+import { generatePrompt, fetchWithRetry } from './_coursesUtils.js';
 
 const db = getDBClient();
 
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     const prompt = generatePrompt(userProfile, role);
     console.log('Generated prompt:', prompt);
 
-    const validCourses = await fetchCoursesFromPerplexity(prompt);
+    const validCourses = await fetchWithRetry(prompt);
 
     res.status(200).json({ courses: validCourses });
     
