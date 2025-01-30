@@ -14,14 +14,14 @@ export default function ModuleCard({ module, index }) {
           {module.status === 'available' ? (
             <Link 
               to={module.path}
-              className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+              className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors cursor-pointer"
             >
               Start Module
             </Link>
           ) : (
             <span className="text-gray-400 text-sm">
-              {module.title === 'Find My Niche' 
-                ? 'Available after saving at least one role' 
+              {module.title === 'Role Explorer' 
+                ? 'Complete your profile to unlock this feature'
                 : 'Available after completing previous modules'}
             </span>
           )}

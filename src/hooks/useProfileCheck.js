@@ -17,7 +17,6 @@ export function useProfileCheck() {
           return;
         }
 
-        console.log("Checking user profile existence with token...");
         const response = await fetch("/api/user-profile", {
           headers: {
             Authorization: `Bearer ${session.access_token}`
@@ -30,8 +29,12 @@ export function useProfileCheck() {
         }
         
         const data = await response.json();
-        console.log("Profile existence check result:", JSON.stringify(data, null, 2));
-        setHasProfile(!!data.exists);
+        // Updated check: Verify profile has required fields
+        const hasRequiredFields = data.academic_year && 
+          data.subjects?.length > 0 && 
+          data.predicted_grades?.length > 0 &&
+          data.location_preference;
+        setHasProfile(hasRequiredFields);
       } catch (error) {
         console.error("Profile check error:", error);
         Sentry.captureException(error);
