@@ -26,7 +26,7 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.access_token}'
+        Authorization: `Bearer ${session?.access_token}`
       },
       body: JSON.stringify({
         academicYear: formData.academicYear,
