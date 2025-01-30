@@ -19,12 +19,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Invalid or missing role parameter' });
     }
 
+    console.log('Fetching courses for role:', role, 'for user:', user.id);
+
     // Get user's academic profile
     const [userProfile] = await db.select()
       .from(user_profiles)
       .where(eq(user_profiles.user_id, user.id));
 
+    console.log('User profile:', userProfile);
+
     const prompt = generatePrompt(userProfile, role);
+    console.log('Generated prompt:', prompt);
+
     const validCourses = await fetchCoursesFromPerplexity(prompt);
 
     res.status(200).json({ courses: validCourses });
