@@ -1,7 +1,7 @@
 import { FormField } from './FormField';
-import { SkillsSection } from './SkillsSection';
+import { SubjectGradeInput } from './SubjectGradeInput';
 
-export function FormFields({ formData, handleInputChange, handleSkillToggle }) {
+export function FormFields({ formData, handleInputChange, handleAddPair, handlePairChange, handleRemovePair }) {
   return (
     <div className="space-y-4">
       <FormField
@@ -14,22 +14,11 @@ export function FormFields({ formData, handleInputChange, handleSkillToggle }) {
         inputClassName="w-full p-2 border rounded-lg box-border"
       />
 
-      <FormField
-        label="Main Subjects (comma separated)"
-        name="subjects"
-        value={formData.subjects}
-        onChange={handleInputChange}
-        placeholder="e.g., Mathematics, Physics, English"
-        required
-      />
-
-      <FormField
-        label="Predicted Grades (comma separated)"
-        name="predictedGrades"
-        value={formData.predictedGrades}
-        onChange={handleInputChange}
-        placeholder="e.g., A, B+, A*"
-        required
+      <SubjectGradeInput
+        pairs={formData.subjectGrades}
+        onAdd={handleAddPair}
+        onChange={handlePairChange}
+        onRemove={handleRemovePair}
       />
 
       <FormField
@@ -48,11 +37,6 @@ export function FormFields({ formData, handleInputChange, handleSkillToggle }) {
         onChange={handleInputChange}
         placeholder="Enter your country"
         required
-      />
-
-      <SkillsSection 
-        selectedSkills={formData.skills}
-        onSkillToggle={handleSkillToggle}
       />
     </div>
   );

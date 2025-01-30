@@ -1,9 +1,8 @@
 import React from 'react';
 import { SkillsSection } from './SkillsSection';
-import { FormField } from './FormField';
 import { useUserProfileForm } from './useUserProfileForm';
-import { SubmitButton } from './SubmitButton';
 import { FormFields } from './FormFields';
+import { SubmitButton } from './SubmitButton';
 
 export default function UserProfileForm({ initialData, keySkills, onComplete, isEditMode, showBackButton = true }) {
   const {
@@ -12,6 +11,9 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
     error,
     handleInputChange,
     handleSkillToggle,
+    handleAddPair,
+    handlePairChange,
+    handleRemovePair,
     handleSubmit
   } = useUserProfileForm(onComplete, { ...initialData, skills: keySkills });
 
@@ -23,9 +25,16 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <FormFields 
-          formData={formData} 
-          handleInputChange={handleInputChange} 
-          handleSkillToggle={handleSkillToggle}
+          formData={formData}
+          handleInputChange={handleInputChange}
+          handleAddPair={handleAddPair}
+          handlePairChange={handlePairChange}
+          handleRemovePair={handleRemovePair}
+        />
+
+        <SkillsSection 
+          selectedSkills={formData.skills}
+          onSkillToggle={handleSkillToggle}
         />
 
         {showBackButton && (
