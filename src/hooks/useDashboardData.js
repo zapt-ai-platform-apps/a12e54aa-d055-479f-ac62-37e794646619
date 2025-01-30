@@ -27,15 +27,22 @@ export default function useDashboardData() {
         const rolesData = await rolesResponse.json();
         setSavedRoles(rolesData);
 
-        // Check profile existence from API
+        // Fetch user profile from API
         const profileResponse = await fetch('/api/user-profile', {
           headers: {
             Authorization: `Bearer ${session.access_token}`
           }
         });
-        if (!profileResponse.ok) throw new Error('Failed to check profile');
+        if (!profileResponse.ok) throw new Error('Failed to fetch profile');
         const profileData = await profileResponse.json();
-        setHasProfile(profileData.exists);
+
+        // Verify all required profile fields are present
+        const hasCompleteProfile = profileData.academic_year && 
+          profileData.subjects?.length > 0 && 
+          profileData.predicted_grades?.length > 0 &&
+          profileData.location_preference;
+          
+        setHasProfile(hasCompleteProfile);
       } catch (error) {
         console.error('Dashboard data error:', error);
         Sentry.captureException(error);
