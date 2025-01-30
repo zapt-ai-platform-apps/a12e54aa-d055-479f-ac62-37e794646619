@@ -7,8 +7,26 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [sessionChecked, setSessionChecked] = useState(false);
 
   useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session?.user) {
+          setUser(session.user);
+        }
+      } catch (error) {
+        Sentry.captureException(error);
+        console.error('Session check error:', error);
+      } finally {
+        setLoading(false);
+        setSessionChecked(true);
+      }
+    };
+    
+    checkSession();
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
         setUser(session.user);
@@ -18,25 +36,11 @@ export function AuthProvider({ children }) {
       setLoading(false);
     });
 
-    const checkSession = async () => {
-      try {
-        const { data: { user } } = await supabase.auth.getUser();
-        setUser(user);
-      } catch (error) {
-        Sentry.captureException(error);
-        console.error('Session check error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    checkSession();
-
     return () => subscription.unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, sessionChecked }}>
       {!loading && children}
     </AuthContext.Provider>
   );
