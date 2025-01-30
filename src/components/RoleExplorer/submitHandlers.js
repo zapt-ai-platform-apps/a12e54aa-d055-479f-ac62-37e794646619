@@ -8,9 +8,10 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) throw new Error('No active session');
 
+    // Convert subjectGrades to expected format
     const subjectGrades = formData.subjectGrades || [];
-    const subjects = subjectGrades.map(pair => pair.subject);
-    const predictedGrades = subjectGrades.map(pair => pair.grade);
+    const subjects = subjectGrades.map(pair => pair.subject).filter(s => s);
+    const predictedGrades = subjectGrades.map(pair => pair.grade).filter(g => g);
 
     console.log('Starting profile update with data:', {
       academicYear: formData.academicYear,
@@ -25,12 +26,11 @@ export const handleProfileSubmit = async (formData, setLoading, setError, onComp
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${session?.access_token}`
+        Authorization: `Bearer ${session?.access_token}'
       },
       body: JSON.stringify({
         academicYear: formData.academicYear,
-        subjects,
-        predictedGrades,
+        subjectGrades: subjectGrades,
         location: formData.location,
         country: formData.country,
         skills: formData.skills
