@@ -1,11 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import ZaptBadge from '../ZaptBadge';
 
 export function HeroSection() {
   return (
-    <header className="container mx-auto px-6 py-20 text-center relative">
-      <ZaptBadge />
+    <header className="container mx-auto px-6 py-20 text-center">
       <h1 className="text-5xl font-bold text-gray-900 mb-6">
         Shape Your Future with AI-Powered Career Guidance
       </h1>
@@ -23,8 +21,7 @@ export function HeroSection() {
       </div>
       
       <div className="mt-12">
-        <img src="https://images.unsplash.com/photo-1519671845924-1fd18db430b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NjQ4Nzh8MHwxfHNlYXJjaHwxMHx8Z3JvdXAlMjBvZiUyMGRpdmVyc2UlMjBzdHVkZW50cyUyMHdvcmtpbmclMjB0b2dldGhlciUyMG9uJTIwbGFwdG9wcyUyMGluJTIwYSUyMG1vZGVybiUyMGNsYXNzcm9vbSUyMHNldHRpbmd8ZW58MHx8fHwxNzM4MjY0MzI0fDA&ixlib=rb-4.0.3&q=80&w=1080" 
-           
+        <img src="https://images.unsplash.com/photo-1522198648249-0657d7ff242a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w2NjQ4Nzh8MHwxfHNlYXJjaHw1fHxncm91cCUyMG9mJTIwZGl2ZXJzZSUyMHN0dWRlbnRzJTIwd29ya2luZyUyMHRvZ2V0aGVyJTIwb24lMjBsYXB0b3BzJTIwaW4lMjBhJTIwbW9kZXJuJTIwY2xhc3Nyb29tJTIwc2V0dGluZ3xlbnwwfHx8fDE3MzgyNjQzMjR8MA&ixlib=rb-4.0.3&q=80&w=1080"  
           alt="Students collaborating on career planning" 
           data-image-request="group of diverse students working together on laptops in a modern classroom setting"
           className="rounded-xl shadow-lg w-full max-w-4xl mx-auto"
