@@ -20,19 +20,12 @@ export async function fetchProfileData() {
   const data = await response.json();
   console.log("Profile data from API:", JSON.stringify(data, null, 2));
   
-  const academicYear = data.academic_year || "";
-  const subjects = data.subjects || [];
-  const predictedGrades = data.predicted_grades || [];
-  const location = data.location_preference || "";
-  const country = data.country || "";
-  const skills = Array.isArray(data.skills) ? data.skills : [];
-
   return {
-    academicYear,
-    subjects,
-    predictedGrades,
-    location,
-    country,
-    skills
+    academicYear: data.academic_year || "",
+    subjects: Array.isArray(data.subjects) ? data.subjects : [],
+    predictedGrades: Array.isArray(data.predicted_grades) ? data.predicted_grades : [],
+    location: data.location_preference || "",
+    country: data.country || "",
+    skills: Array.isArray(data.skills) ? data.skills : []
   };
 }
