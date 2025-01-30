@@ -24,13 +24,10 @@ export default function ProfileViewEdit() {
   useProfileEffects({ setProfileData, setKeySkills, setLoading, setError, setIsNewUser });
 
   const handleSubjectGradeUpdate = (updatedPairs) => {
-    const subjects = updatedPairs.map(pair => pair.subject);
-    const predictedGrades = updatedPairs.map(pair => pair.grade);
-    console.log('Updating subject/grade pairs:', {subjects, predictedGrades});
     setProfileData(prev => ({
       ...prev,
-      subjects,
-      predictedGrades
+      subjects: updatedPairs.map(pair => pair.subject),
+      predictedGrades: updatedPairs.map(pair => pair.grade)
     }));
   };
 

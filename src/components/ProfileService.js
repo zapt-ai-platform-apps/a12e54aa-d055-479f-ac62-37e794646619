@@ -6,7 +6,6 @@ export async function fetchProfileData() {
     throw new Error('No access token found');
   }
 
-  console.log('Fetching profile data from API...');
   const response = await fetch('/api/user-profile', {
     headers: {
       Authorization: `Bearer ${session.access_token}`
@@ -20,15 +19,6 @@ export async function fetchProfileData() {
   
   const data = await response.json();
   
-  console.log('Profile data retrieved:', {
-    academicYear: data.academic_year,
-    subjects: data.subjects,
-    predictedGrades: data.predicted_grades,
-    location: data.location_preference,
-    country: data.country,
-    skills: data.skills
-  });
-
   const academicYear = data.academic_year || '';
   const subjects = data.subjects || [];
   const predictedGrades = data.predicted_grades || [];
