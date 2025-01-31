@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import * as Sentry from '@sentry/browser';
 import { supabase } from '../supabaseClient';
 import { questions } from './questions';
 import QuestionStep from './WorkEnvironmentWizard/QuestionStep';
 import Recommendations from './WorkEnvironmentWizard/Recommendations';
+import { handleSubmitAnswers } from './WorkEnvironmentWizard/handleSubmitAnswers';
 
 export default function WorkEnvironmentWizard() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -20,28 +19,12 @@ export default function WorkEnvironmentWizard() {
   };
 
   const submitAnswers = async () => {
-    try {
-      setLoading(true);
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch('/api/work-environment', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.access_token}`
-        },
-        body: JSON.stringify(answers)
-      });
-
-      if (!response.ok) throw new Error('API request failed');
-      const data = await response.json();
-      setRecommendations(data.recommendations);
-    } catch (error) {
-      Sentry.captureException(error);
-      console.error('Submission error:', error);
-    } finally {
-      setLoading(false);
-    }
+    await handleSubmitAnswers({
+      answers,
+      setLoading,
+      setRecommendations,
+      supabase
+    });
   };
 
   return (

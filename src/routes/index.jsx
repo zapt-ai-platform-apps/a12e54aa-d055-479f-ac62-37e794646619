@@ -6,7 +6,7 @@ import RoleExplorer from '../components/RoleExplorer';
 import GuidedExplorer from '../components/GuidedExplorer';
 import CustomRoleExplorer from '../components/CustomRoleExplorer';
 import FindMyNiche from '../components/FindMyNiche';
-import WorkEnvironmentWizard from '../components/W极客 orkEnvironmentWizard';
+import WorkEnvironmentWizard from '../components/WorkEnvironmentWizard';
 import DayInLifeSimulator from '../components/DayInLifeSimulator';
 import SkillGapsHub from '../components/SkillGapsHub';
 import ApplicationHub from '../components/ApplicationHub';
