@@ -8,7 +8,7 @@ import {
   RoleExplorer,
   GuidedExplorer,
   CustomRoleExplorer,
-  FindMy极客 Niche,
+  FindMyNiche,
   WorkEnvironmentWizard,
   DayInLifeSimulator,
   SkillGapsHub,
@@ -73,7 +73,7 @@ export default function ProtectedRoutes() {
       } />
       
       <Route path="/skill-gaps-hub" element={
-       极客 <ProtectedRoute>
+        <ProtectedRoute>
           <SkillGapsHub />
         </ProtectedRoute>
       } />
