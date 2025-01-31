@@ -1,6 +1,6 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import ProtectedRoute from './components/ProtectedRoute';
+import { Routes, Route } from 'react-router-dom';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import { 
   Dashboard,
   ProfileSetup,
@@ -81,12 +81,6 @@ export default function ProtectedRoutes() {
       <Route path="/application-hub" element={
         <ProtectedRoute>
           <ApplicationHub />
-        </ProtectedRoute>
-      } />
-
-      <Route path="/*" element={
-        <ProtectedRoute>
-          <Navigate to="/dashboard" replace />
         </ProtectedRoute>
       } />
     </Routes>

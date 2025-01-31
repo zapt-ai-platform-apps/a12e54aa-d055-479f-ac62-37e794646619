@@ -20,11 +20,11 @@ export function AuthProvider({ children }) {
         Sentry.captureException(error);
         console.error('Session check error:', error);
       } finally {
-        setLoading(false);
         setSessionChecked(true);
+        setLoading(false);
       }
     };
-    
+
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
       } else {
         setUser(null);
       }
+      setSessionChecked(true);
       setLoading(false);
     });
 
@@ -41,7 +42,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, loading, sessionChecked }}>
-      {!loading && children}
+      {children}
     </AuthContext.Provider>
   );
 }
