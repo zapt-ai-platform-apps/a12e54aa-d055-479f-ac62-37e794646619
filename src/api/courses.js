@@ -1,19 +1,11 @@
 import './sentry.js';
-import * as Sentry from '@sentry/node';
-import { authenticateUser, getDBClient } from './_apiUtils.js';
+import { executeApiWithErrorHandling } from './_apiUtils';
 import { user_profiles } from '../drizzle/schema.js';
 import { eq } from 'drizzle-orm';
 import { generatePrompt, fetchWithRetry } from './_coursesUtils.js';
 
-const db = getDBClient();
-
 export default async function handler(req, res) {
-  try {
-    // Authenticate user
-    const user = await authenticateUser(req);
-    if (!user) throw new Error('User not authenticated');
-
-    // Validate role parameter
+  return executeApiWithErrorHandling(async (req, res, user) => {
     const { role } = req.query;
     if (!role || typeof role !== 'string') {
       return res.status(400).json({ error: 'Invalid or missing role parameter' });
@@ -21,7 +13,7 @@ export default async function handler(req, res) {
 
     console.log('Fetching courses for role:', role, 'for user:', user.id);
 
-    // Get user's academic profile
+    const db = getDBClient();
     const [userProfile] = await db.select()
       .from(user_profiles)
       .where(eq(user_profiles.user_id, user.id));
@@ -31,26 +23,7 @@ export default async function handler(req, res) {
     const prompt = generatePrompt(userProfile, role);
     console.log('Generated prompt:', prompt);
 
-    const validCourses = await fetchWithRetry(prompt);
-
+    const validCourses = await fetchWithRetry(prompt, 3);
     res.status(200).json({ courses: validCourses });
-    
-  } catch (error) {
-    console.error('Courses API Error:', {
-      message: error.message,
-      stack: error.stack,
-      request: {
-        role: req.query.role,
-        user: req.user?.id
-      }
-    });
-
-    Sentry.captureException(error);
-
-    const statusCode = error.message.includes('missing') ? 500 : 400;
-    res.status(statusCode).json({ 
-      error: error.message || 'Failed to fetch courses',
-      details: error.response?.data || null 
-    });
-  }
+  }, req, res);
 }
