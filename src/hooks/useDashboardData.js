@@ -6,6 +6,7 @@ export default function useDashboardData() {
   const [savedRoles, setSavedRoles] = useState([]);
   const [hasProfile, setHasProfile] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,32 +21,45 @@ export default function useDashboardData() {
         // Fetch user roles from API
         const rolesResponse = await fetch('/api/user-roles', {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${session.access_token}`
           }
         });
-        if (!rolesResponse.ok) throw new Error('Failed to fetch roles');
+
+        if (!rolesResponse.ok) {
+          const errorData = await rolesResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch roles');
+        }
+
         const rolesData = await rolesResponse.json();
         setSavedRoles(rolesData);
 
         // Fetch user profile from API
         const profileResponse = await fetch('/api/user-profile', {
           headers: {
+            'Content-Type': 'application/json',
             Authorization: `Bearer ${session.access_token}`
           }
         });
-        if (!profileResponse.ok) throw new Error('Failed to fetch profile');
+
+        if (!profileResponse.ok) {
+          const errorData = await profileResponse.json();
+          throw new Error(errorData.error || 'Failed to fetch profile');
+        }
+
         const profileData = await profileResponse.json();
 
-        // Verify all required profile fields are present
         const hasCompleteProfile = profileData.academic_year && 
           profileData.subjects?.length > 0 && 
           profileData.predicted_grades?.length > 0 &&
           profileData.location_preference;
           
         setHasProfile(hasCompleteProfile);
+        setError(null);
       } catch (error) {
         console.error('Dashboard data error:', error);
         Sentry.captureException(error);
+        setError(error.message || 'Failed to load dashboard data');
       } finally {
         setLoading(false);
       }
@@ -54,5 +68,5 @@ export default function useDashboardData() {
     fetchData();
   }, []);
 
-  return { savedRoles, hasProfile, loading };
+  return { savedRoles, hasProfile, loading, error };
 }

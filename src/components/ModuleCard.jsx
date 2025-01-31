@@ -2,6 +2,42 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export default function ModuleCard({ module, index }) {
+  const getStatusContent = () => {
+    if (module.status === 'loading') {
+      return (
+        <div className="space-y-4 animate-pulse">
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+        </div>
+      );
+    }
+
+    if (module.status === 'locked') {
+      return (
+        <div className="space-y-2">
+          <p className="text-sm text-gray-400">{module.message}</p>
+          {(!module.requiresRole || module.title === 'Role Explorer') && (
+            <Link 
+              to="/profile-setup"
+              className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors cursor-pointer"
+            >
+              Setup Profile
+            </Link>
+          )}
+        </div>
+      );
+    }
+
+    return (
+      <Link 
+        to={module.path}
+        className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors cursor-pointer"
+      >
+        Start Module
+      </Link>
+    );
+  };
+
   return (
     <div className={`p-6 rounded-xl ${module.status === 'available' ? 'bg-white hover:shadow-lg transition-shadow' : 'bg-gray-50 opacity-75'}`}>
       <div className="flex items-start gap-4">
@@ -11,20 +47,7 @@ export default function ModuleCard({ module, index }) {
         <div>
           <h3 className="text-lg font-semibold text-gray-900 mb-2">{module.title}</h3>
           <p className="text-gray-600 text-sm mb-4">{module.description}</p>
-          {module.status === 'available' ? (
-            <Link 
-              to={module.path}
-              className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors cursor-pointer"
-            >
-              Start Module
-            </Link>
-          ) : (
-            <span className="text-gray-400 text-sm">
-              {module.title === 'Role Explorer' 
-                ? 'Complete your profile to unlock this feature'
-                : 'Available after completing previous modules'}
-            </span>
-          )}
+          {getStatusContent()}
         </div>
       </div>
     </div>

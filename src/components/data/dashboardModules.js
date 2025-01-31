@@ -3,7 +3,6 @@ export const modules = [
     title: 'Role Explorer',
     description: 'Discover careers aligned with your interests through AI analysis',
     path: '/role-explorer',
-    status: 'available',
     requiresRole: false
   },
   {
