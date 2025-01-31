@@ -1,6 +1,7 @@
 import pLimit from 'p-limit';
+import * as Sentry from '@sentry/node';
 
-const limit = pLimit(10); // Max 10 concurrent requests
+const limit = pLimit(10);
 
 export async function fetchCoursesFromPerplexity(prompt) {
   const startTime = Date.now();
@@ -74,6 +75,7 @@ export async function fetchCoursesFromPerplexity(prompt) {
       stack: error.stack,
       inputPrompt: prompt
     });
+    Sentry.captureException(error);
     throw error;
   }
 }
