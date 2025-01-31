@@ -1,5 +1,4 @@
 import LandingPage from '../components/LandingPage';
-import AuthComponent from '../components/Auth';
 import Dashboard from '../components/Dashboard';
 import ProfileSetup from '../components/ProfileSetup';
 import ProfileViewEdit from '../components/ProfileViewEdit';
@@ -14,7 +13,6 @@ import ApplicationHub from '../components/ApplicationHub';
 
 export {
   LandingPage,
-  AuthComponent,
   Dashboard,
   ProfileSetup,
   ProfileViewEdit,

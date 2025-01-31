@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { LandingPage, AuthComponent } from './routes';
 import { AuthProvider } from './components/AuthContext';
 import ProtectedRoutes from './ProtectedRoutes';
+import LandingPage from './routes';
 
 export default function App() {
   return (
@@ -10,7 +10,6 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<AuthComponent />} />
           <Route path="/*" element={<ProtectedRoutes />} />
         </Routes>
       </Router>
