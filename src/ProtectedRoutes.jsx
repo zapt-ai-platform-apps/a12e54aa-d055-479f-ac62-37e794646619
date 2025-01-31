@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
-import {
+import { 
   Dashboard,
   ProfileSetup,
   ProfileViewEdit,
@@ -12,7 +12,7 @@ import {
   WorkEnvironmentWizard,
   DayInLifeSimulator,
   SkillGapsHub,
-  ApplicationHub
+  ApplicationHub 
 } from './routes';
 
 export default function ProtectedRoutes() {
