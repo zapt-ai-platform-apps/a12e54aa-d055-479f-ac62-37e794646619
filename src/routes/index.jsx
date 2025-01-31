@@ -11,7 +11,7 @@ import DayInLifeSimulator from '../components/DayInLifeSimulator';
 import SkillGapsHub from '../components/SkillGapsHub';
 import ApplicationHub from '../components/ApplicationHub';
 
-export {
+export default {
   LandingPage,
   Dashboard,
   ProfileSetup,
