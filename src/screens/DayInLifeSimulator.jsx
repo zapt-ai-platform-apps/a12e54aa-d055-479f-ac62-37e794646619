@@ -1,70 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from "../components/LoadingSpinner";
-import RoleSelectionStep from "../components/RoleSelectionStep";
-import ScenarioStep from "../components/ScenarioStep";
-import SimulationFeedbackStep from "../components/SimulationFeedbackStep";
+import React from 'react';
+import LoadingSpinner from '../common/components/LoadingSpinner';
+import RoleSelectionStep from '../components/RoleSelectionStep';
+import ScenarioStep from '../components/ScenarioStep';
+import SimulationFeedbackStep from '../components/SimulationFeedbackStep';
 import { scenarios } from '../data/dayInLifeQuestions';
-import { fetchSavedRoles, submitSimulationResponse, saveSimulationResults } from '../services/dayInLifeService';
+import useDayInLifeSimulator from '../hooks/useDayInLifeSimulator';
 
 export default function DayInLifeSimulator() {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [savedRoles, setSavedRoles] = useState([]);
-  const [responses, setResponses] = useState({});
-  const [courses, setCourses] = useState([]);
-  const [feedback, setFeedback] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  const {
+    currentStep,
+    savedRoles,
+    selectedRole,
+    responses,
+    setResponses,
+    courses,
+    feedback,
+    loading,
+    isSubmitting,
+    handleRoleSelect,
+    handleResponseSubmit,
+    handleSaveResults,
+    setCurrentStep,
+  } = useDayInLifeSimulator();
 
-  useEffect(() => {
-    const loadSavedRoles = async () => {
-      try {
-        const roles = await fetchSavedRoles();
-        setSavedRoles(roles || []);
-      } catch (error) {
-        console.error('Error fetching roles:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    loadSavedRoles();
-  }, []);
-
-  const handleRoleSelect = (roleId) => {
-    const role = savedRoles.find(r => r.id === roleId);
-    setSelectedRole(role);
-    setCurrentStep(1);
-  };
-
-  const handleResponseSubmit = async () => {
-    setIsSubmitting(true);
-    try {
-      const { feedback: feedbackText, courses: fetchedCourses } = await submitSimulationResponse(selectedRole);
-      setFeedback(feedbackText);
-      setCourses(fetchedCourses);
-      setCurrentStep(2);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  const handleSaveResults = async () => {
-    try {
-      await saveSimulationResults(selectedRole, feedback, courses);
-      navigate('/dashboard');
-    } catch (error) {
-      console.error('Save error:', error);
-    }
-  };
-
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">

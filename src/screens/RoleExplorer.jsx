@@ -2,7 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { GuidedSection } from '../features/roleExplorer/RoleExplorerComponents/GuidedSection';
 import { CustomRoleForm } from '../features/roleExplorer/RoleExplorerComponents/Form/CustomRoleForm';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../common/components/LoadingSpinner';
 
 export default function RoleExplorer() {
   const navigate = useNavigate();

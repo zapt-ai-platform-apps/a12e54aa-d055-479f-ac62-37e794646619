@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserProfileForm from '../features/roleExplorer/UserProfileForm';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../common/components/LoadingSpinner';
 import * as Sentry from '@sentry/browser';
 import { fetchProfileData } from '../features/profile/ProfileService';
 import useProfileEffects from '../features/profile/ProfileEffects';

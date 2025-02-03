@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../common/components/LoadingSpinner';
 import RoleSelection from '../features/roleExplorer/components/RoleSelection';
 import ChallengeInteraction from '../components/ChallengeInteraction';
 import { useFindMyNiche } from '../features/niche/useFindMyNiche';

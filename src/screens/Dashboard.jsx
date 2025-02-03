@@ -2,7 +2,7 @@ import React from 'react';
 import { modules } from '../components/data/dashboardModules';
 import Navigation from '../features/dashboard/Navigation';
 import ModuleCard from '../components/ModuleCard';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '../common/components/LoadingSpinner';
 import useDashboardData from '../features/dashboard/useDashboardData';
 
 export default function Dashboard() {
