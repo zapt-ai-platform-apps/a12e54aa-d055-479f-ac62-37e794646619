@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import LoadingSpinner from '../components/LoadingSpinner';
-import RoleSelectionStep from '../components/RoleSelectionStep';
+import LoadingSpinner from '../common/components/LoadingSpinner';
+import { scenarios } from '../data/dayInLifeQuestions';
+import * as Sentry from '@sentry/browser';
+import RoleSelectionStep from './RoleSelectionStep';
 import ScenarioStep from './ScenarioStep';
 import SimulationFeedbackStep from './SimulationFeedbackStep';
-import { scenarios } from '../data/dayInLifeQuestions';
-import { fetchUserSavedRoles, fetchCoursesForRole, saveUserSpecialization } from '../api/dayInLifeSimulatorApi';
-import * as Sentry from '@sentry/browser';
+import { fetchSavedRoles, fetchCoursesForRole, saveUserSpecialization } from '../services/dayInLifeSimulatorService';
 
 export default function DayInLifeSimulator() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -20,12 +20,18 @@ export default function DayInLifeSimulator() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const roles = await fetchUserSavedRoles();
-      setSavedRoles(roles);
-      setLoading(false);
+    const loadSavedRoles = async () => {
+      try {
+        const roles = await fetchSavedRoles();
+        setSavedRoles(roles);
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      } finally {
+        setLoading(false);
+      }
     };
-    fetchData();
+
+    loadSavedRoles();
   }, []);
 
   const handleRoleSelect = (roleId) => {
@@ -39,12 +45,12 @@ export default function DayInLifeSimulator() {
     try {
       const feedbackText = "Strong problem-solving demonstrated. Consider developing more collaborative approaches.";
       setFeedback(feedbackText);
-      const fetchedCourses = await fetchCoursesForRole(selectedRole);
+      const fetchedCourses = await fetchCoursesForRole(selectedRole.role_title);
       setCourses(fetchedCourses);
       setCurrentStep(2);
     } catch (error) {
-      Sentry.captureException(error);
       console.error('Error:', error);
+      Sentry.captureException(error);
     } finally {
       setIsSubmitting(false);
     }
@@ -55,8 +61,8 @@ export default function DayInLifeSimulator() {
       await saveUserSpecialization(selectedRole, feedback, courses);
       navigate('/dashboard');
     } catch (error) {
-      Sentry.captureException(error);
       console.error('Save error:', error);
+      Sentry.captureException(error);
     }
   };
 
@@ -71,6 +77,7 @@ export default function DayInLifeSimulator() {
             onRoleSelect={handleRoleSelect} 
           />
         )}
+
         {currentStep === 1 && selectedRole && (
           <ScenarioStep
             selectedRole={selectedRole}
@@ -81,6 +88,7 @@ export default function DayInLifeSimulator() {
             scenarios={scenarios[selectedRole.role_title] || []}
           />
         )}
+
         {currentStep === 2 && (
           <SimulationFeedbackStep
             feedback={feedback}
