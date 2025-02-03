@@ -1,10 +1,15 @@
 import './sentry.js';
-import { executeApiWithErrorHandling } from './_apiUtils';
+import * as Sentry from '@sentry/node';
+import { authenticateUser, getDBClient } from '../_apiUtils.js';
 import { user_profiles } from '../drizzle/schema.js';
 import { eq } from 'drizzle-orm';
 
+const db = getDBClient();
+
 export default async function handler(req, res) {
-  return executeApiWithErrorHandling(async (req, res, user) => {
+  try {
+    const user = await authenticateUser(req);
+    
     const { 
       academicYear, 
       subjectGrades, 
@@ -13,10 +18,21 @@ export default async function handler(req, res) {
       skills 
     } = req.body;
 
+    // Convert subjectGrades to subjects and predictedGrades arrays
     const subjects = subjectGrades?.map(pair => pair.subject).filter(s => s) || [];
     const predictedGrades = subjectGrades?.map(pair => pair.grade).filter(g => g) || [];
 
-    const db = getDBClient();
+    console.log('Preparing to save profile with data:', {
+      user_id: user.id,
+      academic_year: academicYear,
+      subjects,
+      predicted_grades: predictedGrades,
+      location_preference: location,
+      country,
+      skills,
+      updated_at: new Date()
+    });
+
     const profileData = {
       user_id: user.id,
       academic_year: academicYear,
@@ -35,6 +51,15 @@ export default async function handler(req, res) {
         set: profileData
       });
 
+    console.log('Profile successfully saved for user:', user.id);
+    
     res.status(200).json({ success: true });
-  }, req, res);
+  } catch (error) {
+    console.error('Profile save error:', error);
+    Sentry.captureException(error);
+    res.status(500).json({ 
+      error: error.message || 'Failed to save profile',
+      details: error?.response?.data || null
+    });
+  }
 }

@@ -1,12 +1,15 @@
 import './sentry.js';
-import { executeApiWithErrorHandling } from './_apiUtils';
+import * as Sentry from '@sentry/node';
+import { authenticateUser, getDBClient } from '../_apiUtils.js';
 import { user_roles, saved_courses } from '../drizzle/schema.js';
 
+const db = getDBClient();
+
 export default async function handler(req, res) {
-  return executeApiWithErrorHandling(async (req, res, user) => {
+  try {
+    const user = await authenticateUser(req);
     const { role, requiresHigherEducation, courses } = req.body;
 
-    const db = getDBClient();
     const [newRole] = await db.insert(user_roles).values({
       user_id: user.id,
       role_title: role,
@@ -25,5 +28,8 @@ export default async function handler(req, res) {
     );
 
     res.status(200).json({ success: true });
-  }, req, res);
+  } catch (error) {
+    Sentry.captureException(error);
+    res.status(500).json({ error: error.message });
+  }
 }

@@ -1,10 +1,12 @@
 import './sentry.js';
-import { executeApiWithErrorHandling } from './_apiUtils';
+import * as Sentry from '@sentry/node';
+import { authenticateUser } from '../_apiUtils.js';
 import openai from './openai-client.js';
 import { createCareerAnalysis } from '../lib/ai-utils.js';
 
 export default async function handler(req, res) {
-  return executeApiWithErrorHandling(async (req, res) => {
+  try {
+    await authenticateUser(req);
     const { prompt } = req.body;
     
     const completion = await openai.chat.completions.create(
@@ -24,5 +26,12 @@ export default async function handler(req, res) {
       roles: result.roles || [],
       requires_higher_education: result.requires_higher_education || false
     });
-  }, req, res);
+  } catch (error) {
+    console.error('AI API Error:', error);
+    Sentry.captureException(error);
+    res.status(500).json({ 
+      error: error.message || 'Failed to process request',
+      result: 'Unable to generate response. Please try again.'
+    });
+  }
 }
