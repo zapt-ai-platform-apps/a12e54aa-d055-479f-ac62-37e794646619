@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 import * as Sentry from '@sentry/browser';
 
 export default function useSavedRoles(setError) {
@@ -14,7 +14,6 @@ export default function useSavedRoles(setError) {
           .from('user_roles')
           .select('id, role_title')
           .eq('user_id', user.id);
-
         if (error) throw error;
         setSavedRoles(data);
       } catch (error) {

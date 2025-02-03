@@ -1,8 +1,8 @@
 import React from 'react';
-import LoadingSpinner from "../components/LoadingSpinner";
-import RoleSelection from "../components/RoleSelection";
-import ChallengeInteraction from "../components/ChallengeInteraction";
-import { useFindMyNiche } from '../hooks/useFindMyNiche';
+import LoadingSpinner from '../components/LoadingSpinner';
+import RoleSelection from '../components/RoleSelection';
+import ChallengeInteraction from '../components/ChallengeInteraction';
+import { useFindMyNiche } from '../features/niche/useFindMyNiche';
 
 export default function FindMyNiche() {
   const {

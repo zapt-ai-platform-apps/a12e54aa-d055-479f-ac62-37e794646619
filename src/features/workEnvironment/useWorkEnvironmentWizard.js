@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { supabase } from '../supabaseClient';
-import { handleSubmitAnswers } from '../components/WorkEnvironmentWizard/handleSubmitAnswers';
+import { supabase } from '../../supabaseClient';
+import { handleSubmitAnswers } from '../../components/WorkEnvironmentWizard/handleSubmitAnswers';
 
 export default function useWorkEnvironmentWizard() {
   const [currentStep, setCurrentStep] = useState(0);

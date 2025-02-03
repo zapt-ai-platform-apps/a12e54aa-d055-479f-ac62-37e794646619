@@ -53,7 +53,7 @@ export default function ProfileViewEdit() {
             keySkills={keySkills}
             onComplete={() => navigate('/dashboard')} 
             isEditMode={true}
-            showBackButton={!isNewUser}
+            showBackButton={true}
             onSubjectGradeUpdate={handleSubjectGradeUpdate}
           />
         </div>

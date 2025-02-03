@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import * as Sentry from "@sentry/browser";
-import { supabase } from "../supabaseClient";
+import { supabase } from "../../supabaseClient";
 
 export function useProfileCheck() {
   const [hasProfile, setHasProfile] = useState(false);
@@ -29,7 +29,6 @@ export function useProfileCheck() {
         }
         
         const data = await response.json();
-        // Updated check: Verify profile has required fields
         const hasRequiredFields = data.academic_year && 
           data.subjects?.length > 0 && 
           data.predicted_grades?.length > 0 &&

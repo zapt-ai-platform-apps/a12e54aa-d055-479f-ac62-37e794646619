@@ -1,9 +1,9 @@
 import React from 'react';
-import { modules } from "../components/data/dashboardModules";
-import Navigation from "../components/Navigation";
-import ModuleCard from "../components/ModuleCard";
-import LoadingSpinner from "../components/LoadingSpinner";
-import useDashboardData from '../hooks/useDashboardData';
+import { modules } from '../components/data/dashboardModules';
+import Navigation from '../components/Navigation';
+import ModuleCard from '../components/ModuleCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import useDashboardData from '../features/dashboard/useDashboardData';
 
 export default function Dashboard() {
   const { savedRoles, hasProfile, loading } = useDashboardData();

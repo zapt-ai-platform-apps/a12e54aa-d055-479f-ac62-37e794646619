@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as Sentry from '@sentry/browser';
-import { supabase } from '../supabaseClient';
+import { supabase } from '../../supabaseClient';
 
 export default function useDashboardData() {
   const [savedRoles, setSavedRoles] = useState([]);
@@ -18,7 +18,6 @@ export default function useDashboardData() {
           throw new Error('No active session');
         }
 
-        // Fetch user roles from API
         const rolesResponse = await fetch('/api/user-roles', {
           headers: {
             'Content-Type': 'application/json',
@@ -34,7 +33,6 @@ export default function useDashboardData() {
         const rolesData = await rolesResponse.json();
         setSavedRoles(rolesData);
 
-        // Fetch user profile from API
         const profileResponse = await fetch('/api/user-profile', {
           headers: {
             'Content-Type': 'application/json',

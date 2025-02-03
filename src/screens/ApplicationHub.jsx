@@ -1,12 +1,12 @@
 import React from 'react';
-import Navigation from "../components/Navigation";
-import ModuleCard from "../components/ModuleCard";
-import LoadingSpinner from "../components/LoadingSpinner";
-import useDashboardData from '../hooks/useDashboardData';
-import useSavedRoles from '../hooks/useSavedRoles';
-import useJobListings from '../hooks/useJobListings';
+import { modules } from '../components/data/dashboardModules';
+import Navigation from '../components/Navigation';
+import ModuleCard from '../components/ModuleCard';
+import LoadingSpinner from '../components/LoadingSpinner';
+import useSavedRoles from '../features/dashboard/useSavedRoles';
+import useJobListings from '../features/dashboard/useJobListings';
 import { useNavigate } from 'react-router-dom';
-import Section from "../components/Section";
+import Section from '../components/Section';
 
 export default function ApplicationHub() {
   const [selectedRole, setSelectedRole] = React.useState('');

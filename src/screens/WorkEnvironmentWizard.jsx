@@ -1,14 +1,15 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { questions } from '../data/guidedExplorerQuestions';
-import QuestionStep from "../components/WorkEnvironmentWizard/QuestionStep";
-import Recommendations from "../components/WorkEnvironmentWizard/Recommendations";
-import useWorkEnvironmentWizard from '../hooks/useWorkEnvironmentWizard';
+import QuestionStep from '../components/WorkEnvironmentWizard/QuestionStep';
+import Recommendations from '../components/WorkEnvironmentWizard/Recommendations';
+import useWorkEnvironmentWizard from '../features/workEnvironment/useWorkEnvironmentWizard';
 
 export default function WorkEnvironmentWizard() {
   const navigate = useNavigate();
   const {
     currentStep,
+    answers,
     recommendations,
     loading,
     handleAnswer,

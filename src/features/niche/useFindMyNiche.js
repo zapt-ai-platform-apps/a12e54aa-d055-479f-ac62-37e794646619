@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
 import * as Sentry from '@sentry/browser';
+import { getSavedRoles, fetchChallenges, submitChallengeResponse } from './nicheAPI';
 
 export function useFindMyNiche() {
   const navigate = useNavigate();
@@ -16,16 +16,10 @@ export function useFindMyNiche() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const fetchSavedRoles = async () => {
+    const fetchRoles = async () => {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
-        const { data, error } = await supabase
-          .from('user_roles')
-          .select('id, role_title')
-          .eq('user_id', user.id);
-
-        if (error) throw error;
-        setSavedRoles(data);
+        const roles = await getSavedRoles();
+        setSavedRoles(roles);
       } catch (error) {
         Sentry.captureException(error);
         console.error('Error fetching roles:', error);
@@ -33,16 +27,13 @@ export function useFindMyNiche() {
         setLoading(false);
       }
     };
-
-    fetchSavedRoles();
+    fetchRoles();
   }, []);
 
   const startChallenge = async (roleId) => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/niche-challenges?role_id=${roleId}`);
-      if (!response.ok) throw new Error('Failed to load challenges');
-      const data = await response.json();
+      const data = await fetchChallenges(roleId);
       setChallenges(data.challenges);
       setCurrentChallenge(data.challenges[0]);
       setSelectedRole(roleId);
@@ -64,24 +55,8 @@ export function useFindMyNiche() {
   const submitResponse = async () => {
     try {
       setIsSubmitting(true);
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      const response = await fetch('/api/submit-challenge-response', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session?.access_token}`,
-        },
-        body: JSON.stringify({
-          challenge_id: currentChallenge.id,
-          response: userResponse,
-          role_id: selectedRole
-        })
-      });
-
-      const result = await response.json();
+      const result = await submitChallengeResponse(currentChallenge.id, userResponse, selectedRole);
       setFeedback(result.feedback);
-      
       if (result.specializations) {
         setSpecializations(result.specializations);
       }
