@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import * as Sentry from '@sentry/browser';
-import { getSavedRoles, fetchChallenges, submitChallengeResponse } from './nicheAPI';
+import { getSavedRoles, fetchChallenges, submitChallengeResponse } from '../nicheAPI';
 
 export function useFindMyNiche() {
   const navigate = useNavigate();

@@ -1,36 +1,41 @@
-import { supabase } from '../../supabaseClient';
-
 export async function getSavedRoles() {
-  const { data: { user } } = await supabase.auth.getUser();
-  const { data, error } = await supabase
-    .from('user_roles')
-    .select('id, role_title')
-    .eq('user_id', user.id);
-  if (error) throw error;
-  return data;
+  // Simulate fetching saved roles from an API
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve([
+        { id: 1, name: 'Frontend Developer' },
+        { id: 2, name: 'Backend Developer' },
+        { id: 3, name: 'Full Stack Developer' }
+      ]);
+    }, 500);
+  });
 }
 
 export async function fetchChallenges(roleId) {
-  const response = await fetch(`/api/niche-challenges?role_id=${roleId}`);
-  if (!response.ok) throw new Error('Failed to load challenges');
-  const data = await response.json();
-  return data;
+  // Simulate fetching challenges based on the roleId from an API
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        challenges: [
+          { id: 101, question: 'How would you build a responsive layout?' },
+          { id: 102, question: 'Explain the concept of closures in JavaScript.' },
+          { id: 103, question: 'How do you manage state in a complex application?' }
+        ]
+      });
+    }, 500);
+  });
 }
 
-export async function submitChallengeResponse(challengeId, userResponse, selectedRole) {
-  const { data: { session } } = await supabase.auth.getSession();
-  const response = await fetch('/api/submit-challenge-response', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session?.access_token}`
-    },
-    body: JSON.stringify({
-      challenge_id: challengeId,
-      response: userResponse,
-      role_id: selectedRole
-    })
+export async function submitChallengeResponse(challengeId, response, roleId) {
+  // Simulate submitting a challenge response to an API
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        feedback: 'Your answer has been received and is under review.',
+        specializations: roleId === 1 ? ['CSS', 'Responsive Design'] :
+                         roleId === 2 ? ['Node.js', 'Database Management'] :
+                         ['React', 'Node.js']
+      });
+    }, 500);
   });
-  const result = await response.json();
-  return result;
 }
