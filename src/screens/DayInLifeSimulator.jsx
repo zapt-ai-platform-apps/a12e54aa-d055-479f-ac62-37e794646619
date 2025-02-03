@@ -1,27 +1,64 @@
-import React from 'react';
-import LoadingSpinner from '../common/components/LoadingSpinner';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../components/LoadingSpinner';
 import RoleSelectionStep from '../components/RoleSelectionStep';
-import ScenarioStep from '../components/ScenarioStep';
-import SimulationFeedbackStep from '../components/SimulationFeedbackStep';
+import ScenarioStep from './ScenarioStep';
+import SimulationFeedbackStep from './SimulationFeedbackStep';
 import { scenarios } from '../data/dayInLifeQuestions';
-import useDayInLifeSimulator from '../hooks/useDayInLifeSimulator';
+import { fetchUserSavedRoles, fetchCoursesForRole, saveUserSpecialization } from '../api/dayInLifeSimulatorApi';
+import * as Sentry from '@sentry/browser';
 
 export default function DayInLifeSimulator() {
-  const {
-    currentStep,
-    savedRoles,
-    selectedRole,
-    responses,
-    setResponses,
-    courses,
-    feedback,
-    loading,
-    isSubmitting,
-    handleRoleSelect,
-    handleResponseSubmit,
-    handleSaveResults,
-    setCurrentStep,
-  } = useDayInLifeSimulator();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [selectedRole, setSelectedRole] = useState(null);
+  const [savedRoles, setSavedRoles] = useState([]);
+  const [responses, setResponses] = useState({});
+  const [courses, setCourses] = useState([]);
+  const [feedback, setFeedback] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const roles = await fetchUserSavedRoles();
+      setSavedRoles(roles);
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const handleRoleSelect = (roleId) => {
+    const role = savedRoles.find(r => r.id === roleId);
+    setSelectedRole(role);
+    setCurrentStep(1);
+  };
+
+  const handleResponseSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const feedbackText = "Strong problem-solving demonstrated. Consider developing more collaborative approaches.";
+      setFeedback(feedbackText);
+      const fetchedCourses = await fetchCoursesForRole(selectedRole);
+      setCourses(fetchedCourses);
+      setCurrentStep(2);
+    } catch (error) {
+      Sentry.captureException(error);
+      console.error('Error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleSaveResults = async () => {
+    try {
+      await saveUserSpecialization(selectedRole, feedback, courses);
+      navigate('/dashboard');
+    } catch (error) {
+      Sentry.captureException(error);
+      console.error('Save error:', error);
+    }
+  };
 
   if (loading) return <LoadingSpinner />;
 
@@ -34,7 +71,6 @@ export default function DayInLifeSimulator() {
             onRoleSelect={handleRoleSelect} 
           />
         )}
-
         {currentStep === 1 && selectedRole && (
           <ScenarioStep
             selectedRole={selectedRole}
@@ -45,7 +81,6 @@ export default function DayInLifeSimulator() {
             scenarios={scenarios[selectedRole.role_title] || []}
           />
         )}
-
         {currentStep === 2 && (
           <SimulationFeedbackStep
             feedback={feedback}
