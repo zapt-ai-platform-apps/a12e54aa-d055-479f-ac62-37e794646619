@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../supabaseClient';
-import * as Sentry from '@sentry/browser';
-import LoadingSpinner from './LoadingSpinner';
-import RoleContent from './RoleContent';
-import { saveExploration } from '../utils/saveExploration';
+import Sentry from '@sentry/browser';
+import { supabase } from '../../supabaseClient';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import RoleContent from './RoleExplorerComponents/RoleContent';
+import { saveExploration } from '../../utils/saveExploration';
+import { useRoleData } from '../../hooks/useRoleData';
 
 export default function RoleExplorerCustom() {
   const { role } = useParams();
@@ -19,19 +20,28 @@ export default function RoleExplorerCustom() {
       try {
         setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
-        
-        const response = await fetch(`/api/explorations/custom/${encodeURIComponent(role)}`, {
+        const encodedRole = encodeURIComponent(role);
+
+        const response = await fetch(`/api/explorations/custom/${encodedRole}`, {
           headers: {
-            Authorization: `Bearer ${session?.access_token}`,
-          },
+            Authorization: `Bearer ${session?.access_token}`
+          }
         });
 
+        if (!response.ok) {
+          throw new Error('Failed to fetch role data');
+        }
+
         const data = await response.json();
+
+        if (!data.roleInfo || !data.universityCourses) {
+          throw new Error('Invalid API response structure');
+        }
+
         setRoleInfo(data.roleInfo);
         setCourses(data.courses);
         setRequiresEducation(data.requiresEducation);
       } catch (error) {
-        console.error('Error fetching role data:', error);
         Sentry.captureException(error);
       } finally {
         setLoading(false);
@@ -45,17 +55,15 @@ export default function RoleExplorerCustom() {
     try {
       await saveExploration(role, requiresEducation, courses, navigate);
     } catch (error) {
-      // Error handling is done in saveExploration
+      // Error handling in saveExploration
     }
   };
 
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <LoadingSpinner />;
 
   return (
     <RoleContent
-      role={role}
+      role={decodeURIComponent(role)}
       roleInfo={roleInfo}
       courses={courses}
       requiresEducation={requiresEducation}

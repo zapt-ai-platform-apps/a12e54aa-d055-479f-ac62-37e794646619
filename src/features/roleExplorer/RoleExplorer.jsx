@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { GuidedSection } from './RoleExplorer/GuidedSection';
-import { CustomRoleForm } from './RoleExplorer/CustomRoleForm';
-import LoadingSpinner from './LoadingSpinner';
+import { GuidedSection } from './RoleExplorerComponents/GuidedSection';
+import { CustomRoleForm } from './RoleExplorerComponents/CustomRoleForm';
+import LoadingSpinner from '../../components/LoadingSpinner';
 
 export default function RoleExplorer() {
   const navigate = useNavigate();
-  const [customRole, setCustomRole] = React.useState('');
+  const [customRole, setCustomRole] = useState('');
 
   const handleGuidedStart = () => navigate('/role-explorer/guided');
   const handleCustomStart = (e) => {
@@ -29,7 +29,7 @@ export default function RoleExplorer() {
               Back to Dashboard
             </button>
           </div>
-          
+
           <div className="space-y-6">
             <p className="text-gray-600 mb-8">
               Discover careers that align with your interests through either our guided AI assessment 
