@@ -1,15 +1,15 @@
-import LandingPage from '../components/LandingPage';
-import Dashboard from '../components/Dashboard';
-import ProfileSetup from '../components/ProfileSetup';
-import ProfileViewEdit from '../components/ProfileViewEdit';
-import RoleExplorer from '../components/RoleExplorer';
-import GuidedExplorer from '../components/GuidedExplorer';
-import CustomRoleExplorer from '../components/CustomRoleExplorer';
-import FindMyNiche from '../components/FindMyNiche';
-import WorkEnvironmentWizard from '../components/WorkEnvironmentWizard';
-import DayInLifeSimulator from '../components/DayInLifeSimulator';
-import SkillGapsHub from '../components/SkillGapsHub';
-import ApplicationHub from '../components/ApplicationHub';
+import LandingPage from '../screens/LandingPage';
+import Dashboard from '../screens/Dashboard';
+import ProfileSetup from '../screens/ProfileSetup';
+import ProfileViewEdit from '../screens/ProfileViewEdit';
+import RoleExplorer from '../screens/RoleExplorer';
+import GuidedExplorer from '../screens/GuidedExplorer';
+import CustomRoleExplorer from '../screens/CustomRoleExplorer';
+import FindMyNiche from '../screens/FindMyNiche';
+import WorkEnvironmentWizard from '../screens/WorkEnvironmentWizard';
+import DayInLifeSimulator from '../screens/DayInLifeSimulator';
+import SkillGapsHub from '../screens/SkillGapsHub';
+import ApplicationHub from '../screens/ApplicationHub';
 
 export {
   LandingPage,
