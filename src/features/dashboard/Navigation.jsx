@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { handleSignOut } from '../utils/auth';
+import { handleSignOut } from '../../utils/auth';
 
 export default function Navigation() {
   const navigate = useNavigate();

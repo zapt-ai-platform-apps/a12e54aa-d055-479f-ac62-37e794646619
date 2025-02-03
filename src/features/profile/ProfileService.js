@@ -1,4 +1,4 @@
-import { supabase } from "../supabaseClient";
+import { supabase } from '../../supabaseClient';
 
 export async function fetchProfileData() {
   const { data: { session } } = await supabase.auth.getSession();

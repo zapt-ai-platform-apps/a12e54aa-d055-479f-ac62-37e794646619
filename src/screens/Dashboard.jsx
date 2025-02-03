@@ -1,6 +1,6 @@
 import React from 'react';
 import { modules } from '../components/data/dashboardModules';
-import Navigation from '../components/Navigation';
+import Navigation from '../features/dashboard/Navigation';
 import ModuleCard from '../components/ModuleCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import useDashboardData from '../features/dashboard/useDashboardData';
