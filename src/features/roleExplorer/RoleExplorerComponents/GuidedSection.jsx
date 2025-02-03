@@ -1,10 +1,12 @@
+import React from 'react';
+
 export function GuidedSection({ onStart }) {
   return (
     <div className="bg-blue-50 p-6 rounded-lg">
       <h2 className="text-xl font-semibold mb-4">Guided Career Discovery</h2>
       <p className="text-gray-600 mb-4">
         Our AI coach will ask you a series of questions to identify roles that match 
-        your skills, interests, and values.
+        your skills, interests and values.
       </p>
       <button
         onClick={onStart}
