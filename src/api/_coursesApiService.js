@@ -1,7 +1,7 @@
 import pLimit from 'p-limit';
 import * as Sentry from '@sentry/node';
 
-const limit = pLimit(10);
+const limit = pLimit(10); // Max 10 concurrent requests
 
 export async function fetchCoursesFromPerplexity(prompt) {
   const startTime = Date.now();
@@ -17,6 +17,7 @@ export async function fetchCoursesFromPerplexity(prompt) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
         Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`
       },
       body: JSON.stringify({

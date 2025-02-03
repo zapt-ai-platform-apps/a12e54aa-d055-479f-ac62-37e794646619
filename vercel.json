@@ -10,7 +10,7 @@
     }
   ],
   "functions": {
-    "api/*.js": {
+    "api/**/*.js": {
       "includeFiles": "drizzle/schema.js"
     }
   }
