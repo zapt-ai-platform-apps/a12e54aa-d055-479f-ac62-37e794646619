@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { handleProfileSubmit } from "../components/Form/submitHandlers";
+import { handleProfileSubmit } from "../../components/RoleExplorer/submitHandlers.jsx";
 import { 
   handleInputChange,
   handleSkillToggle,
