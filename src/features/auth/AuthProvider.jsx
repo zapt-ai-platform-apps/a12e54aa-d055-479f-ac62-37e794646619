@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../../supabaseClient';
 import * as Sentry from '@sentry/browser';
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -20,11 +20,11 @@ export function AuthProvider({ children }) {
         Sentry.captureException(error);
         console.error('Session check error:', error);
       } finally {
-        setSessionChecked(true);
         setLoading(false);
+        setSessionChecked(true);
       }
     };
-
+    
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
@@ -33,7 +33,6 @@ export function AuthProvider({ children }) {
       } else {
         setUser(null);
       }
-      setSessionChecked(true);
       setLoading(false);
     });
 
@@ -42,7 +41,7 @@ export function AuthProvider({ children }) {
 
   return (
     <AuthContext.Provider value={{ user, loading, sessionChecked }}>
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }
