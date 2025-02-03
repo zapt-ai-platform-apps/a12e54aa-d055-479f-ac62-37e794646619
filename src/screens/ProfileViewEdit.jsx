@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserProfileForm from "../components/RoleExplorer/UserProfileForm";
-import LoadingSpinner from "../components/LoadingSpinner";
+import UserProfileForm from '../features/roleExplorer/UserProfileForm';
+import LoadingSpinner from '../components/LoadingSpinner';
 import * as Sentry from '@sentry/browser';
-import { fetchProfileData } from "../components/ProfileService";
-import useProfileEffects from "../components/ProfileEffects";
+import { fetchProfileData } from '../components/ProfileService';
+import useProfileEffects from '../components/ProfileEffects';
 
 export default function ProfileViewEdit() {
   const navigate = useNavigate();

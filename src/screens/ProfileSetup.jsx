@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserProfileForm from "../components/RoleExplorer/UserProfileForm";
-import LoadingSpinner from "../components/LoadingSpinner";
+import UserProfileForm from '../features/roleExplorer/UserProfileForm';
+import LoadingSpinner from '../components/LoadingSpinner';
 import { useProfileCheck } from '../hooks/useProfileCheck';
 
 export default function ProfileSetup() {
