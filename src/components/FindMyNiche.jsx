@@ -1,7 +1,7 @@
 import React from 'react';
 import LoadingSpinner from './LoadingSpinner';
 import RoleSelection from './RoleSelection';
-import ChallengeInteraction from './ChallengeInteraction';
+import ChallengeInteraction from '../features/niche/ChallengeInteraction';
 import { useFindMyNiche } from '../hooks/useFindMyNiche';
 
 export default function FindMyNiche() {
