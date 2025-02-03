@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Sentry from '@sentry/browser';
-import { supabase } from '../../supabaseClient';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import * as Sentry from '@sentry/browser';
+import LoadingSpinner from '../components/LoadingSpinner';
 import RoleContent from './RoleExplorerComponents/RoleContent';
 import { saveExploration } from '../../utils/saveExploration';
-import { useRoleData } from '../../hooks/useRoleData';
+import { useRoleData } from './hooks/useRoleData';
+import { useSaveRole } from './hooks/useSaveRole';
+import { supabase } from '../../supabaseClient';
 
 export default function RoleExplorerCustom() {
   const { role } = useParams();
@@ -21,7 +22,7 @@ export default function RoleExplorerCustom() {
         setLoading(true);
         const { data: { session } } = await supabase.auth.getSession();
         const encodedRole = encodeURIComponent(role);
-
+        
         const response = await fetch(`/api/explorations/custom/${encodedRole}`, {
           headers: {
             Authorization: `Bearer ${session?.access_token}`
