@@ -1,7 +1,5 @@
-import pLimit from 'p-limit';
+import { callPerplexityAPI } from './perplexityClient';
 import * as Sentry from '@sentry/node';
-
-const limit = pLimit(10); // Max 10 concurrent requests
 
 export async function fetchCoursesFromPerplexity(prompt) {
   const startTime = Date.now();
@@ -13,27 +11,18 @@ export async function fetchCoursesFromPerplexity(prompt) {
 
     console.log('Sending request to Perplexity API with prompt:', prompt);
 
-    const response = await limit(() => fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        Authorization: `Bearer ${process.env.PERPLEXITY_API_KEY}`
-      },
-      body: JSON.stringify({
-        model: 'sonar-medium-online',
-        messages: [{
-          role: 'user',
-          content: prompt
-        }]
-      })
-    }));
+    const response = await callPerplexityAPI(prompt, process.env.PERPLEXITY_API_KEY);
 
     const duration = Date.now() - startTime;
     console.log(`Perplexity API call took ${duration}ms`);
 
     if (!response.ok) {
-      const errorData = await response.json();
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch (e) {
+        errorData = { message: await response.text() };
+      }
       console.error('Perplexity API error:', {
         status: response.status,
         error: errorData,
@@ -42,6 +31,12 @@ export async function fetchCoursesFromPerplexity(prompt) {
       throw new Error(`Perplexity API request failed with status ${response.status}: ${errorData.message || 'Unknown error'}`);
     }
 
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.includes('application/json')) {
+      const text = await response.text();
+      throw new Error(`Perplexity API response is not JSON: ${text}`);
+    }
+    
     const data = await response.json();
     console.log('Perplexity API response:', data);
 
