@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from "./Button";
+import { Button } from "../RoleExplorerComponents/Form/Button";
 
 export const SubjectGradeInput = ({ pairs, onAdd, onChange, onRemove }) => {
   return (
