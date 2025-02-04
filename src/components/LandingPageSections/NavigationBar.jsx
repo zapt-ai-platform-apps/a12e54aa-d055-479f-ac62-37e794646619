@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export function NavigationBar() {
   return (
@@ -12,11 +13,14 @@ export function NavigationBar() {
         />
         <div className="text-2xl font-bold text-blue-600">ImmerJ</div>
       </div>
-      <Link 
-        to="/login" 
-        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-      >
-        Get Started
+      <Link to="/login">
+        <motion.div 
+          whileHover={{ scale: 1.05 }} 
+          whileTap={{ scale: 0.95 }}
+          className="cursor-pointer bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          Get Started
+        </motion.div>
       </Link>
     </nav>
   );
