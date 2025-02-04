@@ -1,5 +1,5 @@
 import React from 'react';
-import { skillOptions } from './constants';
+import { skillOptions } from './constants.js';
 
 export const SkillsSection = ({ selectedSkills, onSkillToggle }) => {
   return (
@@ -8,7 +8,7 @@ export const SkillsSection = ({ selectedSkills, onSkillToggle }) => {
         Key Skills
       </label>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
-        {skillOptions.map(skill => (
+        {skillOptions.map((skill) => (
           <button
             key={skill}
             type="button"
@@ -17,7 +17,7 @@ export const SkillsSection = ({ selectedSkills, onSkillToggle }) => {
               selectedSkills.includes(skill)
                 ? 'bg-blue-100 border-blue-500'
                 : 'bg-white border-gray-200 hover:border-gray-300'
-            }`}
+            } cursor-pointer`}
           >
             {skill}
           </button>
