@@ -1,9 +1,9 @@
 import React from 'react';
-import { SkillsSection } from './RoleExplorerComponents/Form/SkillsSection';
-import { FormField } from './RoleExplorerComponents/FormField';
-import { useUserProfileForm } from './RoleExplorerComponents/useUserProfileForm';
-import { SubjectGradeInput } from './RoleExplorerComponents/SubjectGradeInput';
-import { SubmitButton } from './RoleExplorerComponents/SubmitButton';
+import { SkillsSection } from './components/SkillsSection';
+import { FormField } from './components/FormField';
+import { useUserProfileForm } from '../hooks/useUserProfileForm';
+import { SubjectGradeInput } from './components/SubjectGradeInput';
+import { SubmitButton } from './components/SubmitButton';
 
 export default function UserProfileForm({ initialData, keySkills, onComplete, isEditMode }) {
   const {
@@ -20,9 +20,7 @@ export default function UserProfileForm({ initialData, keySkills, onComplete, is
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">
-        {isEditMode ? 'Edit Profile' : 'Profile Setup'}
-      </h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">{isEditMode ? 'Edit Profile' : 'Profile Setup'}</h2>
 
       {error && <div className="bg-red-50 text-red-600 p-3 rounded-lg">{error}</div>}
 
