@@ -1,6 +1,6 @@
 import React from 'react';
 import { modules } from '../components/data/dashboardModules';
-import Navigation from '../components/Navigation';
+import Navigation from '../features/dashboard/Navigation';
 import ModuleCard from '../components/ModuleCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import useSavedRoles from '../features/dashboard/useSavedRoles';
@@ -20,6 +20,7 @@ export default function ApplicationHub() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
+      <Navigation />
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm p-6">
         <h1 className="text-2xl font-bold mb-6">Application Development Hub</h1>
         
