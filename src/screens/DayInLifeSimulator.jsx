@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/components/LoadingSpinner';
 import { supabase } from '../supabaseClient';
-import { scenarios } from '../data/dayInLifeQuestions';
 import * as Sentry from '@sentry/browser';
 import { RoleSelectionStep, ScenarioStep, SimulationFeedbackStep } from './SimSteps';
+import { scenarios } from '../data/dayInLifeQuestions';
 
 export default function DayInLifeSimulator() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -25,7 +25,6 @@ export default function DayInLifeSimulator() {
           .from('user_roles')
           .select('id, role_title')
           .eq('user_id', user.id);
-        
         setSavedRoles(data || []);
       } catch (error) {
         Sentry.captureException(error);
@@ -34,7 +33,6 @@ export default function DayInLifeSimulator() {
         setLoading(false);
       }
     };
-    
     fetchSavedRoles();
   }, []);
 
@@ -47,9 +45,8 @@ export default function DayInLifeSimulator() {
   const handleResponseSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const feedbackText = "Strong problem-solving demonstrated. Consider developing more collaborative approaches.";
+      const feedbackText = "Great job handling the scenario. Consider refining your approach for even better results.";
       setFeedback(feedbackText);
-      
       const { data: { session } } = await supabase.auth.getSession();
       const response = await fetch(`/api/courses?role=${encodeURIComponent(selectedRole.role_title)}`, {
         headers: {
@@ -58,7 +55,6 @@ export default function DayInLifeSimulator() {
       });
       const data = await response.json();
       setCourses(data.courses.slice(0, 5));
-      
       setCurrentStep(2);
     } catch (error) {
       Sentry.captureException(error);
@@ -80,7 +76,6 @@ export default function DayInLifeSimulator() {
           feedback: feedback,
           courses: courses
         }]);
-      
       navigate('/dashboard');
     } catch (error) {
       Sentry.captureException(error);
