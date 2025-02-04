@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react';
-import { handleProfileSubmit } from './submitHandlers';
-import { 
-  handleInputChange as formInputChange,
-  handleSkillToggle as formSkillToggle,
-  handlePairChange as formPairChange,
-  handleAddPair as formAddPair,
-  handleRemovePair as formRemovePair
-} from './formHandlers';
-import { defaultFormData } from './constants';
+import { handleProfileSubmit } from './submitHandlers.js';
+import { defaultFormData } from '../../features/roleExplorer/RoleExplorerComponents/Form/constants';
 
 export const useUserProfileForm = (onComplete, initialData) => {
   const [formData, setFormData] = useState({
@@ -27,19 +20,35 @@ export const useUserProfileForm = (onComplete, initialData) => {
     error,
     handleInputChange: (e) => {
       const { name, value } = e.target;
-      setFormData(prev => formInputChange(name, value, prev));
+      setFormData(prev => ({ ...prev, [name]: value }));
     },
     handleSkillToggle: (skill) => {
-      setFormData(prev => formSkillToggle(skill, prev));
+      setFormData(prev => ({
+        ...prev,
+        skills: prev.skills.includes(skill)
+          ? prev.skills.filter(s => s !== skill)
+          : [...prev.skills, skill]
+      }));
     },
     handlePairChange: (index, field, value) => {
-      setFormData(prev => formPairChange(index, field, value, prev));
+      setFormData(prev => ({
+        ...prev,
+        subjectGrades: prev.subjectGrades.map((pair, i) =>
+          i === index ? { ...pair, [field]: value } : pair
+        )
+      }));
     },
     handleAddPair: () => {
-      setFormData(prev => formAddPair(prev));
+      setFormData(prev => ({
+        ...prev,
+        subjectGrades: [...prev.subjectGrades, { subject: '', grade: '' }]
+      }));
     },
     handleRemovePair: (index) => {
-      setFormData(prev => formRemovePair(index, prev));
+      setFormData(prev => ({
+        ...prev,
+        subjectGrades: prev.subjectGrades.filter((_, i) => i !== index)
+      }));
     },
     handleSubmit: async (e) => {
       e.preventDefault();

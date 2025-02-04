@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { handleProfileSubmit } from '../../../components/RoleExplorer/submitHandlers.js';
-import { defaultFormData } from '../../../components/RoleExplorer/Form/constants';
+import { defaultFormData } from '../RoleExplorerComponents/Form/constants';
 
 export const useUserProfileForm = (onComplete, initialData) => {
   const [formData, setFormData] = useState({
