@@ -18,7 +18,7 @@ export default function ModuleCard({ module, index }) {
           <p className="text-sm text-gray-400">{module.message}</p>
           {(!module.requiresRole || module.title === 'Role Explorer') && (
             <Link 
-              to="/profile-setup"
+              to="/profile"
               className="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors cursor-pointer"
             >
               Setup Profile
