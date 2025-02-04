@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LoadingSpinner from '../common/components/LoadingSpinner';
+import { supabase } from '../supabaseClient';
 import { scenarios } from '../data/dayInLifeQuestions';
 import * as Sentry from '@sentry/browser';
-import RoleSelectionStep from './RoleSelectionStep';
-import ScenarioStep from './ScenarioStep';
-import SimulationFeedbackStep from './SimulationFeedbackStep';
-import { fetchSavedRoles, fetchCoursesForRole, saveUserSpecialization } from '../services/dayInLifeSimulatorService';
+import { RoleSelectionStep, ScenarioStep, SimulationFeedbackStep } from './SimSteps';
 
 export default function DayInLifeSimulator() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -20,18 +18,24 @@ export default function DayInLifeSimulator() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadSavedRoles = async () => {
+    const fetchSavedRoles = async () => {
       try {
-        const roles = await fetchSavedRoles();
-        setSavedRoles(roles);
+        const { data: { user } } = await supabase.auth.getUser();
+        const { data } = await supabase
+          .from('user_roles')
+          .select('id, role_title')
+          .eq('user_id', user.id);
+        
+        setSavedRoles(data || []);
       } catch (error) {
+        Sentry.captureException(error);
         console.error('Error fetching roles:', error);
       } finally {
         setLoading(false);
       }
     };
-
-    loadSavedRoles();
+    
+    fetchSavedRoles();
   }, []);
 
   const handleRoleSelect = (roleId) => {
@@ -45,12 +49,20 @@ export default function DayInLifeSimulator() {
     try {
       const feedbackText = "Strong problem-solving demonstrated. Consider developing more collaborative approaches.";
       setFeedback(feedbackText);
-      const fetchedCourses = await fetchCoursesForRole(selectedRole.role_title);
-      setCourses(fetchedCourses);
+      
+      const { data: { session } } = await supabase.auth.getSession();
+      const response = await fetch(`/api/courses?role=${encodeURIComponent(selectedRole.role_title)}`, {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`
+        }
+      });
+      const data = await response.json();
+      setCourses(data.courses.slice(0, 5));
+      
       setCurrentStep(2);
     } catch (error) {
-      console.error('Error:', error);
       Sentry.captureException(error);
+      console.error('Error:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -58,11 +70,21 @@ export default function DayInLifeSimulator() {
 
   const handleSaveResults = async () => {
     try {
-      await saveUserSpecialization(selectedRole, feedback, courses);
+      const { data: { user } } = await supabase.auth.getUser();
+      await supabase
+        .from('user_specializations')
+        .insert([{
+          user_id: user.id,
+          role_id: selectedRole.id,
+          specialization: 'Simulation Results',
+          feedback: feedback,
+          courses: courses
+        }]);
+      
       navigate('/dashboard');
     } catch (error) {
-      console.error('Save error:', error);
       Sentry.captureException(error);
+      console.error('Save error:', error);
     }
   };
 
