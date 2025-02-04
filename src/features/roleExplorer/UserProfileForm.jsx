@@ -1,7 +1,7 @@
 import React from 'react';
 import { SkillsSection } from './components/SkillsSection';
 import { FormField } from './components/FormField';
-import { useUserProfileForm } from '../hooks/useUserProfileForm';
+import { useUserProfileForm } from './hooks/useUserProfileForm';
 import { SubjectGradeInput } from './components/SubjectGradeInput';
 import { SubmitButton } from './components/SubmitButton';
 
