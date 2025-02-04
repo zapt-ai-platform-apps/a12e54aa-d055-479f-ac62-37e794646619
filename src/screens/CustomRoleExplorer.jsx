@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Sentry from '@sentry/browser';
+import * as Sentry from '@sentry/browser';
 import LoadingSpinner from '../common/components/LoadingSpinner';
 import CustomRoleExplorerUI from '../features/roleExplorer/RoleExplorerComponents/CustomRoleExplorerUI';
-import useRoleData from '../features/roleExplorer/hooks/useRoleData';
-import useSaveRole from '../features/roleExplorer/hooks/useSaveRole';
+import { useRoleData } from '../features/roleExplorer/hooks/useRoleData';
+import { useSaveRole } from '../features/roleExplorer/hooks/useSaveRole';
 
 export default function CustomRoleExplorer() {
   const { role } = useParams();
